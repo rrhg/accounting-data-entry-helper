@@ -49,12 +49,14 @@ Input formats:
     1. `pdf2txt.py` will create a text file.  
 1. `python debits.py`   
     1. `debits.py` reads data from text file created by `pdf2txt.py`
-    1. interact with the script to create vendors.csv & debit.csv files that u can import from your accounting software.
+    1. Interact with the script via the command line to create vendors.csv & debit.csv files that u can import from your accounting software.
     1. TODO: link to guide
     1. Reminder:  
         - clients == our accounting clients  
         - partner(type == customers) == customers to our clients  
-        - partner(type == vendors) == vendors to our clients  
+        - partner(type == vendors) == vendors to our clients
+    1. Vendors & customers are saved
+    1. When `debits.py` finds a vendor in a debit/payment line, automatically creates a transaction with vendor code, name, amount, accounts, date, etc. 
 1. `python credits.py`
 1. Import created csv files from your accounting software
 1. TODO:
