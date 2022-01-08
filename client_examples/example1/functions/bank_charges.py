@@ -10,20 +10,13 @@ def line_contains_bank_charges( line ):
     """ only called when there_are_additional_bank_charges_outside_debits_lines () returns True.  Find lines with bank charges, that are not in same seccion with other debits"""
     """ DO NOT INCLUDE HERE BANK CHARGES THAT ARE IN THE SAME LINES SECCION AS OTHER DEBITS """
 
-
     if ( 
-            # examples
-            # bool(re.search('payment', line )) # 
-            # bool(re.search('^\d\d-\d\d', line )) # starts with date like 01-15
-
             'a string' in line
+            and bool(re.search('payment', line )) # 
             or
             bool(re.search('^Another string', line )) # start with
-            or
-            bool(re.search('Even another', line ))
-
+            and bool(re.search('^\d\d-\d\d', line )) # starts with date like 01-15
         ):
-        
         return True
     
     return False

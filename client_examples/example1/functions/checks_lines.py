@@ -11,12 +11,11 @@ def is_a_line_of_checks(line, previous_line):
 
     if ( 
             bool(re.search('^000000', line )) 
-            and
-            bool(re.search('\d\d-\d\d', line ))
-
-            # 'a string' in line and 'another' in line and 'other' in line
-            # and
-            # len( line.split() ) < 2
+            and bool(re.search('\d\d-\d\d', line ))
+            # or
+            # 'a string' in line
+            # and 'another' in previous_line
+            # and len( line.split() ) < 2
         ):
         return True
     
@@ -51,46 +50,32 @@ def get_2nd_ck_line_from_line( line ):
 
 
 def get_amount_str_from_ck_line( ck_line ):
-
     splited = ck_line.split()
-
     amount = splited[-1]
- 
     return amount
 
 
 
 def get_ck_number_from_ck_line( ck_line ):
-
     splited = ck_line.split()
-
     ck_number = splited[0][6:]
-
     return ck_number
 
 
 
 def get_date_from_ck_line( ck_line ):
-
     splited = ck_line.split()
-
     date = splited[1]
-
     return date
 
 
 
 def line_has_more_than_1_ck( line ): 
-
     if len( re.findall( '\d\d-\d\d\s', line )    ) > 1: # theres 2 checks on same line. need to get the other check info
         return True
-
     return False
 
 
 def clean_ck_line( line ):
-
     return line.replace(" * ", " ").replace(" - ", " ").replace(" _ ", " ") # sometimes the line has u helpful *, & sometimes pdf2txt confuses it for a - or a _
-
-    # when no need to clean a check line
-    # return line
+    # return line # when no need to clean a check line

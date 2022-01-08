@@ -32,22 +32,17 @@ def is_not_a_debit_line(line):
 
 def is_1st_line_of_debits(line, previous_line):
     if ( 
-         (
+           ( # a different approach. add more parens
             'str' in line
             and 'another' in previous_line
-            and 'another' in previous_line
-            and 'another' in previous_line
-            # len( line.split() ) < 2
-         )
+            and len( line.split() ) < 2
+           )
          or
-         (
+           (
              'another' in line
-             and 'another' in line
              and 'str' in previous_line
-         )
-        
-        ):
-
+           )
+       ):
         return True
     
     return False
@@ -57,11 +52,10 @@ def is_1st_line_of_debits(line, previous_line):
 def is_last_line_of_debits(line, previous_line):
     if ( 
             'str' in line
-            and
+            or
             'str2' in previous_line
-            # len( line.split() ) < 2
+            and len( line.split() ) < 2
         ):
-
         return True
     
     return False
@@ -73,29 +67,14 @@ def do_nothing_but_keep_debit_line( line, previous_line ):
     Debit lines to keep bc contains amount of next line
     but don't do nothing with it ( as in don't ask if it contains a vendor )
     """
-    if (  (
-             
-             line_start_w_date_allow_Oo(previous_line)
-             # bool(re.search('^\d\d-\d\d', previous_line ))
-             and
-             bool(re.search('str', previous_line ))
-             or
-             bool(re.search('str2', previous_line ))
-
-          )
-
-          or
-
-          ( 
-            bool(re.search('str', line )) # 
-            and
-            # TODO: use utils line_start_with_date_allow_Oo(😒)
-            bool(re.search('^\d\d-\d\d', line )) # starts with date like 01-15
-            and
-            'str' not in line
-          )
+    if (  
+            'str1' in line
+            and line_start_w_date_allow_Oo(previous_line)
+            or
+            bool(re.search('^\d\d-\d\d', previous_line ))
+            and bool(re.search('str', previous_line ))
+            and bool(re.search('str2', previous_line ))
         ):
-
         return True
     
     return False
@@ -110,35 +89,7 @@ def amount_is_in_previous_debit_line(line, previous_line):
 
     if (
             line_start_w_date_allow_Oo( previous_line )
-            and
-            (    'str' in previous_line
-                 # and
-            )
-    ):
-        return True
-
-
-    if (
-            line_start_w_date_allow_Oo( line )
-            and
-            (    'str' in line
-                 or
-                 'str2' in line
-                 or
-                 'str3' in line
-            )
-    ):
-        return False
-
-
-    if ( 
-            ( 
-                line_start_w_date_allow_Oo( previous_line )
-                # bool(re.search('^\d\d-\d\d', previous_line ))
-            )
-
-            and 'another' not in line
-           
+            and'str' in previous_line
         ):
         return True
 
