@@ -1,5 +1,11 @@
 import csv
 
+"""    Reminder:
+        clients == our accounting clients
+        partner(type == customers) == customers to our clients
+        partner(type == vendors) == vendors to our clients
+"""
+
 
 # TODO: comment with better explanation 
 def convert_imported_customer_csv_row_to_dict( csv_row, partner_dict ):

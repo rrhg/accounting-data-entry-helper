@@ -7,10 +7,10 @@ from utils.files import create_dir_w_parents, get_clients_names_from_dir
 """
     Copy a client(folder recursively) from "client_examples/" to ==> "accounting_clients/" and rename
 
-    Reminder:
+       Reminder:
         clients == our accounting clients
-        customers ==customers to our clients
-        vendors == vendors to our clients
+        partner(type == customers) == customers to our clients
+        partner(type == vendors) == vendors to our clients
 """
 
 project = Path(__file__).parent

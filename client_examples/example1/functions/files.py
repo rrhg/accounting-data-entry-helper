@@ -2,6 +2,12 @@ from pathlib import Path
 from os.path import join
 import os
 
+"""    Reminder:
+        clients == our accounting clients
+        partner(type == customers) == customers to our clients
+        partner(type == vendors) == vendors to our clients
+"""
+
 PATH_FOR_CLIENT = Path(__file__).parent.parent
 
 BANK_STATEMENT_DIR = join(PATH_FOR_CLIENT, "bank_statement")

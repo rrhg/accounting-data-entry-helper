@@ -6,6 +6,11 @@ from .new_ordered_dict_by_key_string import new_ordered_dict_by_key_string
 from utils.csv2 import add_partner_to_csv_file
 from config import VENDORS_JSON_FILE, CUSTOMERS_JSON_FILE
 
+"""    Reminder:
+        clients == our accounting clients
+        partner(type == customers) == customers to our clients
+        partner(type == vendors) == vendors to our clients
+"""
 
 def add_partner(partner_dict, ptype=vendor):
     add_partner_to_csv_file(partner_dict, ptype=ptype) # output for importing in accounting software

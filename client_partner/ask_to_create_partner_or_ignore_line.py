@@ -4,6 +4,11 @@ from .prompt_user_for_partner_autocomplete import prompt_user_for_partner_autoco
 from .create_and_add_partner import create_and_add_partner
 from utils.lines.ignored_lines import ignored_lines
 
+"""    Reminder:
+        clients == our accounting clients
+        partner(type == customers) == customers to our clients
+        partner(type == vendors) == vendors to our clients
+"""
 
 def ask_to_create_partner_or_ignore_line(line, previous_line, ptype=vendor, msg_if_not_found=''):
     # TODO: predicted_vendor_code = model.predict_partner( line, ptype )

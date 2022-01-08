@@ -38,4 +38,4 @@ for page in pages:
             f.write("=============================== ========================= =========================================\n")
         page_number = page_number + 1
 
-print();print('Output text file was saved to ==> ');print( output_file );print()
+print('\n', 'Output text file was saved to ==> ', '\n', output_file, '\n')

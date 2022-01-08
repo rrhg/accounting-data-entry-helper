@@ -15,7 +15,11 @@ clients_folder = 'accounting_clients'
 PATH_FOR_CLIENTS = create_dir_w_parents( join(PATH_FOR_PROJECT, clients_folder )  )
 
 clients = get_clients_names_from_dir(PATH_FOR_CLIENTS)
-""" clients == our accounting clients; customers==customers to our clients; definition of client == seek professional services, longer business relashionship """
+"""    Reminder:
+        clients == our accounting clients
+        partner(type == customers) == customers to our clients
+        partner(type == vendors) == vendors to our clients
+"""
 
 
 # current client

@@ -1,4 +1,14 @@
 
+
+
+"""    Reminder:
+        clients == our accounting clients
+        partner(type == customers) == customers to our clients
+        partner(type == vendors) == vendors to our clients
+"""
+
+
+
 """
                 Import all functions, classes, etc from all files in the current directory
 """
