@@ -10,12 +10,12 @@ def is_a_line_of_checks(line, previous_line):
     # return False # when there are no checks(that need to enter vendor manually). Or for testing without entering checks
 
     if ( 
-            bool(re.search('^000000', line )) 
+            'a string' in line
+            and bool(re.search('^000000', line )) 
             and bool(re.search('\d\d-\d\d', line ))
-            # or
-            # 'a string' in line
-            # and 'another' in previous_line
-            # and len( line.split() ) < 2
+            or
+            'another' in previous_line
+            and len( line.split() ) < 2
         ):
         return True
     
@@ -28,10 +28,11 @@ def get_1st_ck_line_from_line( line ):
         A check line may contain more than 1 check.
         Here we get only the info(line aka string) from the 1st one.
     """
-    splited = line.split()
-    ck1 = splited[:4]
-    ck1 = ' '.join(ck1) # bc next functions expect lines to be strings
     # return line # if there is only 1 check per line
+
+    splited = line.split()
+    ck1 = splited[:4] # in this case, 1st check info is in 1st 4 words of the line
+    ck1 = ' '.join(ck1) # bc next functions expect lines to be strings
     return ck1
 
 
@@ -44,7 +45,7 @@ def get_2nd_ck_line_from_line( line ):
     splited = line.split()
     ck2 = splited[4:]
     ck2 = ' '.join(ck2) # bc next functions expect lines to be strings
-    # print('ck1 == ', ck1)
+    # print('ck2 == ', ck2)
     return ck2
 
 

@@ -5,19 +5,26 @@ from utils.prompt_user_autocomplete import prompt_user_autocomplete
 from utils.files import create_dir_w_parents, get_clients_names_from_dir
 
 """
-    Copy a client(folder recursively) from 
-    client_examples/ to ==> accounting_clients/
-    and rename
+    Copy a client(folder recursively) from "client_examples/" to ==> "accounting_clients/" and rename
+
+    Reminder:
+        clients == our accounting clients
+        customers ==customers to our clients
+        vendors == vendors to our clients
 """
 
 project = Path(__file__).parent
 
-""" clients == our accounting clients; customers==customers to our clients; definition of client == seek professional services, longer business relashionship """
-clients_folder = join(project,'accounting_clients')
+accounting_clients_folder = join(project,'accounting_clients')
+created_clients = get_clients_names_from_dir(accounting_clients_folder)
+
 examples_folder = join(project,'client_examples')
-# TODO inlude old clients in /accounting_clients folder
 examples = get_clients_names_from_dir(examples_folder)
-example = prompt_user_autocomplete( 'Select an example to copy : ', examples )
+
+clients = examples
+if created_clients:
+    clients = examples + created_clients
+chosen = prompt_user_autocomplete( 'Select a client or example to copy : ', clients )
 
 print()
 while True:
@@ -25,12 +32,14 @@ while True:
     if len(name) > 0:
         break
 
-src = join(  examples_folder, example)
-dest = join( clients_folder,  name)
+src = ''
+if chosen in examples:
+    src = join(  examples_folder, chosen)
+else:
+    src = join(  accounting_clients_folder, chosen)
+
+dest = join( accounting_clients_folder,  name)
 
 created = shutil.copytree(src, dest)
 
-print()
-print ('Created ==> ')
-print(created)
-print()
+print('\n', 'Created ==> ','\n', created, '\n')
