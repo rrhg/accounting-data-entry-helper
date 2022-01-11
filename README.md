@@ -63,14 +63,14 @@ Input formats:
 
   
 TODO :  
-1. In `new_client.py` include option to choose previously created clients in `/accounting_clients`
 1. Better explanations in example client functions
 1. csv to txt
 1. Tesseract OCR instructions
 1. Clients git backup
 1. Model(river library) for learning & predicting vendor/customer per line
 1. Option to choose different account # than vendor default
-1. partner_dict
+1. Tests
+1. Github Actions
 1. A
 1. A
 1. A
