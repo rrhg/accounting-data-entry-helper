@@ -7,7 +7,30 @@ def start_w_dollar_sign(string):
 
 def replace_char_by_index(s, char, index):
     return s[:index] + char + s[index +1:]
+
+
+def clean_line_for_training(line):
+    """ remove non important strings for training the model """
+    line = re.sub(r'\s+', ' ',   line) # Eliminate duplicate whitespaces using wildcards
     
+    # 1st look complete date that uses /
+    line = re.sub(r"\d+/\d+/\d+", '',   line) # complete date
+    # then without year
+    line = re.sub(r"\d+/\d+", '',   line) # day & month
+    
+    line = re.sub(r"\d+-\d+-\d+", '',   line) # complete date
+    line = re.sub(r"\d+-\d+", '',   line) # day & month
+    
+    line = re.sub(r"\d+\.\d+", '',   line) # amounts that have a .
+    line = re.sub(r"\.\d+", '',   line) # cents after a .
+    line = re.sub(r'\$+', '',   line) # $
+    line = re.sub(r'\s-\s', ' ',   line) # space - space
+    line = re.sub(r'^\s+', '',   line) # rm whitespaces at beg
+    line = re.sub(r'\n+', '',   line)
+    line = line.upper()
+    line = line.replace('*', '')
+    return line
+
 
 def try_convert_amount_to_float( amount_str_received , transaction_dict, line = '', caller = ''):
 

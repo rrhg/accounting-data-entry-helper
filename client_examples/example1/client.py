@@ -5,6 +5,7 @@ from pathlib import Path
 class client:
     name = Path(__file__).parent.name # parent_folder_name
 
+
     from .functions.files import get_txt_input_file_path, file_with_new_vendors_to_import, file_with_new_customers_to_import, get_folder_path_for_output, get_pdf_statement_file_path
     get_pdf_statement_file_path = get_pdf_statement_file_path
     get_folder_path_for_output = get_folder_path_for_output

@@ -19,7 +19,6 @@ txt_ext = '.txt'
 #TODO create client.csv_statement_file()
 csv_file = r"C:\Users\path\to\file"
 
-
 in_file = csv_file + csv_ext
 out_file = csv_file + txt_ext
 

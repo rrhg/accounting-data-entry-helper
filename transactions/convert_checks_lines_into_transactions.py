@@ -18,4 +18,8 @@ def convert_checks_lines_into_transactions( checks_lines, transactions ):
 
         trans = get_trans_from_vendor_dict( vendor_dict )
         transactions.append( trans )
-        trans.print_trans_added( ck_line )
+
+        """ 
+            Not training model with checks lines (for now) bc it seems that check lines are not relevant to find the vendor. That's why we ask the user to enter the vendor for each check. Check line only have ck number, date, & those do not tell us anything about the vendor
+            trans.log_and_train( ck_line, "" ) # previous line in cks is not relevant to train model or logging
+        """

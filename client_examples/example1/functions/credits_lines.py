@@ -68,7 +68,7 @@ def do_nothing_but_keep_credit_line( line, previous_line ):
             bool(re.search('a string', line ))
             and 'str' in line
             and 'str3' in previous_line
-            bool(re.search('^\d\d-\d\d', line )) # starts with date like 01-15
+            and bool(re.search('^\d\d-\d\d', line )) # starts with date like 01-15
 
         ):
         return True

@@ -33,7 +33,7 @@ def search_and_add_transactions_from_bank_charges( all_lines, transactions ):
 
                 if t:
                     transactions.append( t )
-                    t.log_and_train( line )
+                    t.log_and_train( line, previous_line )
             else:
                 pass
 

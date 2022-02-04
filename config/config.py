@@ -5,7 +5,7 @@ from pathlib import Path
 from utils.prompt_user_autocomplete import prompt_user_autocomplete
 from utils.files import create_dir_w_parents, get_clients_names_from_dir
 from utils.json import get_dict_from_json_file
-
+from utils.model import Model
 
 
 PATH_FOR_PROJECT = Path(__file__).parent.parent
@@ -33,6 +33,12 @@ PATH_THIS_CLIENT = create_dir_w_parents( join(PATH_FOR_CLIENTS, client_name )  )
 STATEMENT_DATA_FILE = client.get_txt_input_file_path()
 STATEMENT_PDF = client.get_pdf_statement_file_path()
 
+
+# model
+model_folder = 'model'
+model_file_name = 'model.pkl'
+model_file = PATH_THIS_CLIENT / model_folder / model_file_name
+model = Model(model_file)
 
 
 # periods
