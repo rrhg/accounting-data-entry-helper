@@ -30,8 +30,19 @@ client = imported_client_module.client
 
 PATH_THIS_CLIENT = create_dir_w_parents( join(PATH_FOR_CLIENTS, client_name )  )
 
-STATEMENT_DATA_FILE = client.get_txt_input_file_path()
-STATEMENT_PDF = client.get_pdf_statement_file_path()
+
+# bank statement files
+statement_folder = 'bank_statement'
+PATH_BANK_STATEMENT_DIR = create_dir_w_parents( PATH_THIS_CLIENT / statement_folder )
+STATEMENT_DATA_FILE = client.get_txt_input_file_path(PATH_BANK_STATEMENT_DIR)
+STATEMENT_PDF = client.get_pdf_statement_file_path(PATH_BANK_STATEMENT_DIR)
+
+
+# images of pdf statement to be converted by tesseract to text
+# TODO should we a find a way to not save tesseract images in disk
+PATH_TESSERACT_IMAGES_DIR = create_dir_w_parents(
+    PATH_BANK_STATEMENT_DIR / 'tesseract_images'
+)
 
 
 # model
@@ -54,12 +65,8 @@ YEAR_FOR_DATE = DATE_END_OF_PERIOD.split('/')[-1]
 
 
 
-# BANK_ACCOUNT = client.get_bank_account() # TODO delete ?
-
-
-
 # output
-PATH_FOR_OUTPUT = client.get_folder_path_for_output()
+PATH_FOR_OUTPUT = client.get_folder_path_for_output(PATH_THIS_CLIENT)
 if not PATH_FOR_OUTPUT:
     PATH_FOR_OUTPUT = create_dir_w_parents( join( PATH_THIS_CLIENT, 'output')  )
 

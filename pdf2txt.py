@@ -4,7 +4,7 @@ import os
 import pytesseract
 from PIL import Image
 from pdf2image import convert_from_path
-from config import STATEMENT_DATA_FILE, STATEMENT_PDF
+from config import STATEMENT_DATA_FILE, STATEMENT_PDF, PATH_TESSERACT_IMAGES_DIR
 
 
 # If you need to assign tesseract to path
@@ -18,16 +18,17 @@ pdf_file_name = os.path.split(pdf_file)[-1]
 output_file = STATEMENT_DATA_FILE
 page_number = 1
 
-sub_dir = os.path.join("tesseract_images", pdf_file_name.replace('.pdf','')[0:20] )
-# TODO avoid sub_dir by not saving images. see below
-if not os.path.exists(sub_dir):
-    os.makedirs(sub_dir)
+images_dir = PATH_TESSERACT_IMAGES_DIR / pdf_file_name.replace('.pdf','')[0:20]
+# TODO avoid images_dir by not saving images. see below
+if not os.path.exists(images_dir):
+    os.makedirs(images_dir)
+
 
 pages = convert_from_path(pdf_file)
 for page in pages:
     if page_number <= 20:
         image_name = "pg_"+str(page_number)+'_'+ pdf_file_name.replace('.pdf','.jpg')
-        image_path = os.path.join(sub_dir, image_name)
+        image_path = os.path.join(images_dir, image_name)
         # TODO avoid having to save page. maybe f.write(pytesseract.image_to_string(page)) f.write("\n")
         page.save(image_path)
 
