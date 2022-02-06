@@ -11,8 +11,8 @@ class Model:
         self.MODEL_FILE = file_path
         self.backup_model_file()
         self.model = self.load_model()
+        self.logs = False
         """
-        # This helps make sure the model is loading only once & that it includes last period added labels(vendors/customers)
         print('==>  model was loaded (hopefully only once) <==================================================================================================================================================================================================================================================================================================================================================================')    
         print()
         self.print_partners_prob('no line available at module creation')
@@ -25,18 +25,14 @@ class Model:
 
 
     def train_model(self, line, partner_code):
-        """ 
-        # this helps see how cleaning lines is working
-        self.print_cleaned_line(line)
-        """
+        if self.logs: 
+            self.print_cleaning_line_details(line) # use before cleaned
         line = clean_line_for_training(line)
         """ Train 100 times to increase accuracy. Previously it was not enough. This script runs only once for period(month)"""
         for _ in range(100):
             self.model = self.model.learn_one(line, partner_code) # river API
-        """
-        # this helps see how the model is doing
-        self.print_training_info(line, partner_code)
-        """
+        if self.logs: 
+            self.print_training_info(line, partner_code)
 
 
     def load_model(self):
@@ -94,7 +90,7 @@ class Model:
         print('==========================')
 
 
-    def print_cleaned_line(line):
+    def print_cleaning_line_details(self, line):
         print()
         print('line bf clean :')
         print(line)
@@ -103,6 +99,10 @@ class Model:
         print(line)
         print()
 
+
+    def activate_logs(self):
+        self.logs = True
+        
 
 """
  this may or may not be used. 

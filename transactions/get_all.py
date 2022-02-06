@@ -23,7 +23,7 @@ def get_all(statement_text_file, trans_type=debit):
 
 
 def get_all_debits():
-    return get_all(STATEMENT_DATA_FILE, trans_type=debit)
+    return get_all(STATEMENT_DATA_FILE,  trans_type=debit)
 
 
 def get_all_credits():

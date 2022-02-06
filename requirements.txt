@@ -7,3 +7,4 @@ pytesseract==0.3.7
 pdf2image==1.15.1
 pexpect==4.6.0
 cmake==3.22.1
+typer==0.4.0
