@@ -16,6 +16,12 @@ print();print('Converting ==> ');print( pdf_file );print()
 pdf_file_name = os.path.split(pdf_file)[-1]
 
 output_file = STATEMENT_DATA_FILE
+
+# DO NOT DELETE
+# clear the output file # needed bc below we are just appending
+f = open(output_file, '+w')
+f.close()
+
 page_number = 1
 
 images_dir = PATH_TESSERACT_IMAGES_DIR / pdf_file_name.replace('.pdf','')[0:20]
