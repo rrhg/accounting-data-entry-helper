@@ -2,6 +2,8 @@ from config import ENTERED_CHECKS_FILE, client
 from utils.entered_checks import ck_was_already_entered, get_already_entered_ck_info, add_to_entered_checks, get_trans_from_vendor_dict
 from client_partner import get_debit_transaction_from_check_line
 from client_partner import get_vendor_dict_from_ck_line
+from rich.console import Console
+red = Console(style="red")
 
 
 def convert_checks_lines_into_transactions( checks_lines, transactions ):
@@ -16,7 +18,7 @@ def convert_checks_lines_into_transactions( checks_lines, transactions ):
              ck_number in ck_nums_found
         ):
             print()
-            print(f'Ignoring ck# {ck_number} because it was already added & the client function use_only_the_1st_ck_when_duplicated() is set to True')
+            red.print(f'Ignoring ck# {ck_number} because it was already added & the client function use_only_the_1st_ck_when_duplicated() is set to True')
             print()
 
 

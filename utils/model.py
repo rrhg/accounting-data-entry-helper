@@ -4,6 +4,8 @@ from pathlib import Path
 import shutil
 from datetime import datetime
 from utils.strings import clean_line_for_training
+from rich.console import Console
+yellow = Console(style="yellow")
 
 
 class Model:
@@ -50,12 +52,14 @@ class Model:
 
 
     def print_training_info(self, line, partner_code):
-        print()
-        print('Trained model with line :')
+        yellow.print()
+        yellow.print('==========================')
+        yellow.print('Trained model with line :')
         print(line)
-        print('Trained model with label(partner code) :')
+        yellow.print('Trained model with label(partner code) :')
         print(partner_code)
-        print()
+        yellow.print('==========================')
+        yellow.print()
         self.print_partners_prob(line)
 
 
@@ -75,29 +79,31 @@ class Model:
 
 
     def print_partners_prob(self, line):
-        print('==========================')
-        print('Line :')
+        yellow.print('==========================')
+        yellow.print('Line :')
         print(line)
-        print()
-        print('Prediction :')
+        yellow.print()
+        yellow.print('Prediction :')
         print(self.predict_partner(line))
-        print()
-        print('Model Labels, Probabilities & lenght :')
+        yellow.print()
+        yellow.print('Model Labels, Probabilities & lenght :')
         partners_prob = self.model.predict_proba_one(line) # river API
-        print(partners_prob)
-        print('len == ', len(partners_prob))
-        print()
-        print('==========================')
+        yellow.print(partners_prob)
+        yellow.print('len == ', len(partners_prob))
+        yellow.print('==========================')
+        yellow.print()
 
 
     def print_cleaning_line_details(self, line):
-        print()
-        print('line bf clean :')
+        yellow.print()
+        yellow.print('==========================')
+        yellow.print('line bf clean :')
         print(line)
         line = clean_line_for_training(line)
-        print('line after clean :')
+        yellow.print('line after clean :')
         print(line)
-        print()
+        yellow.print('==========================')
+        yellow.print()
 
 
     def activate_logs(self):

@@ -6,6 +6,8 @@ from utils.dates import try_convert_date
 from transactions.transaction import transaction
 from .get_all import get_all
 from .create_and_add_partner import create_and_add_partner
+from rich.console import Console
+red = Console(style="red")
 
 
 def get_credit_transaction_from_line( partner_key, line, previous_line, ignore_date=False ):
@@ -66,12 +68,12 @@ def get_transaction_from_line( partner_key, line, previous_line, ptype=vendor, i
 
             """ In some statements, bank charges lines are printed even if have a 0.00 amount """
             if amount == 0:
-                print();print('Ignoring because amount == 0. Line was:');print(amount_line);print()
+                print();red.print('Ignoring because amount == 0. Line was:');print(amount_line);print()
                 return False
 
             amount = str( amount )
         except Exception as e:
-            print('In the first line, we could not split the previous line. Just pass, for now. Probably not important...');print() # TODO : is this true ?
+            red.print('In the first line, we could not split the previous line. Just pass, for now. Probably not important...');print() # TODO : is this true ?
 
         date_line = line
         if date_is_in_previous_line(line, previous_line):

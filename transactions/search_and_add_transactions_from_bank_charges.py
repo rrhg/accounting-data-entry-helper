@@ -1,6 +1,8 @@
 from utils import lines, dates
 import client_partner
 from config import client, DATE_END_OF_PERIOD
+from rich.console import Console
+red = Console(style="red")
 
 
 """ for satements where bank charges are NOT in same lines(section) as debits (& we dont want to add all bank charges lines to lines of debits) """
@@ -22,9 +24,10 @@ def search_and_add_transactions_from_bank_charges( all_lines, transactions ):
         if client.line_contains_bank_charges( line ): 
             found = True
 
-            print('found a bank charge outside of debits seccion. line ==> ',line)
+            red.print('Found a bank charge outside of debits seccion. line : ')
+            print(line)
             # a = input('hit enter')
-            print()
+            red.print()
         
             vendor_key = client_partner.find_vendor_in_line_or_ask(line, previous_line, msg_if_not_found='Did not find vendor in bank charges line')
 
@@ -40,10 +43,10 @@ def search_and_add_transactions_from_bank_charges( all_lines, transactions ):
         previous_line = line # even if line was ignored temporarily by user, it is still the previous line
 
     if not found:
-        print()
-        print('Did not found any line with bank charges, 🤔, (when searching outside of debits seccion)')
+        red.print()
+        red.print('Did not found any line with bank charges, 🤔, (when searching outside of debits seccion)')
         # print(f'The string "{string_to_find}" in clients/functions/string_in_line_w_total_bank_charges() was not found on any line')
-        print()
+        red.print()
         a = input('Do you want to continue ? y or n : ')
         if a == 'n' or a == 'N':
             exit()

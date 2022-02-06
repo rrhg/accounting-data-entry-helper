@@ -2,6 +2,10 @@ import re
 from config import client, model
 from utils.csv2.write_rows_to_csv_file import write_rows_to_csv_file
 from utils.csv2.append_csv_row_to_file import append_csv_row_to_file
+from rich import print
+
+from rich.console import Console
+blue_console = Console(style="white on blue")
 
 # TODO should this have defaults for credits & debits ? 
 class transaction:
@@ -36,17 +40,17 @@ class transaction:
         """
 
     def print_trans_added(self, line, previous_line):
-        print()
-        print('==========================')
-        print('transaction added --->> ')
+        blue_console.print()
+        blue_console.print('==========================')
+        blue_console.print('transaction added --->> ')
         for attr, value in self.__dict__.items():
             if not attr.startswith('_'):
                 if not attr == 'internal_period_number':
-                    print(attr, '=', value)
-        print()
-        print('previous line was : ')
-        print( previous_line )
-        print('line was : ')
-        print( line )
-        print('==========================')
-        print()
+                    blue_console.print(attr, '=', value)
+        blue_console.print()
+        blue_console.print('previous line was : ')
+        blue_console.print( previous_line )
+        blue_console.print('line was : ')
+        blue_console.print( line )
+        blue_console.print('==========================')
+        blue_console.print()

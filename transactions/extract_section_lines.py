@@ -1,4 +1,6 @@
 from config import client, debit, credit
+from rich.console import Console
+red = Console(style="red")
 
 
 def extract_section_lines(lines, trans_type=debit):
@@ -36,7 +38,8 @@ def extract_section_lines(lines, trans_type=debit):
                 is_1st_line(line, previous_line)
             ):
             print()
-            print(' ==> found starting '+ trans_type +' line. ==> ', line)
+            red.print(' ==> Found starting '+ trans_type +' line. : ')
+            print( line)
             print()
             FOUND_STARTING_LINE = True
             STARTING_LINE = LINE_NUMBER
@@ -46,7 +49,8 @@ def extract_section_lines(lines, trans_type=debit):
                 is_last_line(line, previous_line)
             ):
             print()
-            print(' ==> found ending '+ trans_type +' line. ==> ', line)
+            red.print(' ==> Found ending '+ trans_type +' line. : ')
+            print( line)
             print()
             ENDING_LINE = LINE_NUMBER
             FOUND_ENDING_LINE = True

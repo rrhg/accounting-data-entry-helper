@@ -3,6 +3,10 @@ import utils
 from .prompt_user_for_partner_autocomplete import prompt_user_for_partner_autocomplete
 from .create_and_add_partner import create_and_add_partner
 from utils.lines.ignored_lines import ignored_lines
+from rich.console import Console
+red = Console(style="red")
+yellow = Console(style="yellow")
+
 
 """    Reminder:
         clients == our accounting clients
@@ -17,18 +21,18 @@ def ask_to_create_partner_or_ignore_line(line, previous_line, ptype=vendor, msg_
 
     print()    
     if msg_if_not_found:
-        print(msg_if_not_found)
+        red.print(msg_if_not_found)
     else:
-        print('Found NO '+ ptype +' for this line:')
+        red.print('Found NO '+ ptype +' for this line:')
 
     print(line)
     print()
-    print('1- Choose an existing '+ ptype )
-    print('2- Choose the suggested partner :'+ str(predicted_vendor_code) )
-    print('3- Create a new '+ ptype)
-    print('4- Ignore line for ever (add line to ignored lines)')
-    print('5- Ignore line just this time')
-    print('6- Test the model')
+    red.print('1- Choose an existing '+ ptype )
+    red.print('2- Choose the suggested partner :'+ str(predicted_vendor_code) )
+    red.print('3- Create a new '+ ptype)
+    red.print('4- Ignore line for ever (add line to ignored lines)')
+    red.print('5- Ignore line just this time')
+    red.print('6- Test the model')
 
 
     while True:
@@ -53,7 +57,7 @@ def ask_to_create_partner_or_ignore_line(line, previous_line, ptype=vendor, msg_
 
         if a == "3":
             print()
-            print('==== creating a '+ ptype +' ========================')
+            red.print('==== creating a '+ ptype +' ========================')
             print()
             vendor_dict = create_and_add_partner(line, previous_line, ptype=ptype)
 
@@ -65,7 +69,7 @@ def ask_to_create_partner_or_ignore_line(line, previous_line, ptype=vendor, msg_
 
         if a == '4':
             print()
-            print('ignoring line forever by adding it to ignored lines json file')
+            red.print('ignoring line forever by adding it to ignored lines json file')
             print( repr(line) )
 
             ttype = debit
@@ -79,7 +83,7 @@ def ask_to_create_partner_or_ignore_line(line, previous_line, ptype=vendor, msg_
 
         if a == '5':                    
             print()
-            print('Ignoring line just this time')
+            red.print('Ignoring line just this time')
             print()
             return False
 
@@ -88,7 +92,7 @@ def ask_to_create_partner_or_ignore_line(line, previous_line, ptype=vendor, msg_
             print()
             l = input(' Enter a line to make a prediction')
             test_prediction = model.predict_partner(l)
-            print('predicted == ', test_prediction)
+            yellow.print('predicted == ', test_prediction)
             model.print_partners_prob(line)
             print()
             """ Do nothing. While loop will ask again"""
