@@ -51,7 +51,16 @@ class client:
 
 
 
-    from .functions.checks_lines import is_a_line_of_checks, get_amount_str_from_ck_line, get_date_from_ck_line, get_ck_number_from_ck_line, get_1st_ck_line_from_line, get_2nd_ck_line_from_line, line_has_more_than_1_ck, clean_ck_line
+    from .functions.checks_lines import (is_a_line_of_checks, 
+                                        get_amount_str_from_ck_line, 
+                                        get_date_from_ck_line, 
+                                        get_ck_number_from_ck_line, 
+                                        get_1st_ck_line_from_line, 
+                                        get_2nd_ck_line_from_line, 
+                                        line_has_more_than_1_ck, 
+                                        clean_ck_line,
+                                        use_only_the_1st_ck_when_duplicated
+    )
     is_a_line_of_checks = is_a_line_of_checks
     get_amount_str_from_ck_line = get_amount_str_from_ck_line
     get_date_from_ck_line = get_date_from_ck_line
@@ -60,6 +69,8 @@ class client:
     clean_ck_line = clean_ck_line
     get_1st_ck_line_from_line = get_1st_ck_line_from_line
     get_2nd_ck_line_from_line = get_2nd_ck_line_from_line
+    use_only_the_1st_ck_when_duplicated = use_only_the_1st_ck_when_duplicated
+
 
 
     from .functions.periods import get_periods, get_internal_period_number, get_first_day, get_last_day

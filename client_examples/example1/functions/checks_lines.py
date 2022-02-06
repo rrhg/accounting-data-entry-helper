@@ -80,3 +80,14 @@ def line_has_more_than_1_ck( line ):
 def clean_ck_line( line ):
     return line.replace(" * ", " ").replace(" - ", " ").replace(" _ ", " ") # sometimes the line has u helpful *, & sometimes pdf2txt confuses it for a - or a _
     # return line # when no need to clean a check line
+
+def use_only_the_1st_ck_when_duplicated():
+    # return False
+
+    """
+       Sometimes returned checks that were re deposited 
+       appear twice in a bank statement
+       Here you have the option ignore them & only the 
+       first check will be added to transactions in the output csv file
+    """
+    return True #  
