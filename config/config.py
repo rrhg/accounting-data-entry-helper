@@ -6,6 +6,9 @@ from utils.prompt_user_autocomplete import prompt_user_autocomplete
 from utils.files import create_dir_w_parents, get_clients_names_from_dir
 from utils.json import get_dict_from_json_file
 from utils.model import Model
+from rich.console import Console
+red = Console(style="red")
+yellow = Console(style="yellow")
 
 
 PATH_FOR_PROJECT = Path(__file__).parent.parent
@@ -23,7 +26,9 @@ clients = get_clients_names_from_dir(PATH_FOR_CLIENTS)
 
 
 # current client
-client_name = prompt_user_autocomplete( 'Select a client : ', clients )
+print()
+red.print( 'Select a client : ' )
+client_name = prompt_user_autocomplete( ' : ', clients )
 imported_client_module = getattr(__import__( clients_folder , fromlist=[ client_name ]), client_name )
 """ is equivalent to: from accounting_clients import <client_name> as imported_client_module """
 client = imported_client_module.client
@@ -54,7 +59,8 @@ model = Model(model_file)
 
 # periods
 periods = client.get_periods()
-PERIOD = prompt_user_autocomplete( 'Select a period : ', periods.keys() )
+red.print( 'Select a period : ' )
+PERIOD = prompt_user_autocomplete( ' : ', periods.keys() )
 INTERNAL_PERIOD_NUMBER = client.get_internal_period_number( PERIOD, periods )
 DATE_END_OF_PERIOD = client.get_last_day( PERIOD )
 DATE_BEG_OF_PERIOD = client.get_first_day( PERIOD )

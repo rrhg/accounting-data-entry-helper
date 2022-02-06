@@ -37,7 +37,8 @@ def ask_to_create_partner_or_ignore_line(line, previous_line, ptype=vendor, msg_
 
     while True:
         print()
-        a = str( input('Enter a number from 1 to 6: ') )
+        red.print('Enter a number from 1 to 6: ')
+        a = str( input(' : ') )
     
         if a == '1': 
             partner_key = prompt_user_for_partner_autocomplete( 'this line', ptype=ptype)

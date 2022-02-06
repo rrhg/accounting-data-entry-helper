@@ -3,6 +3,10 @@ from os.path import join
 from pathlib import Path
 from utils.prompt_user_autocomplete import prompt_user_autocomplete
 from utils.files import create_dir_w_parents, get_clients_names_from_dir
+from rich.console import Console
+red = Console(style="red")
+yellow = Console(style="yellow")
+
 
 """
     Copy a client(folder recursively) from "client_examples/" to ==> "accounting_clients/" and rename
@@ -24,11 +28,13 @@ examples = get_clients_names_from_dir(examples_folder)
 clients = examples
 if created_clients:
     clients = examples + created_clients
-chosen = prompt_user_autocomplete( 'Select a client or example to copy : ', clients )
+red.print( 'Select a client or example to copy : ' )
+chosen = prompt_user_autocomplete( ' : ', clients )
 
 print()
 while True:
-    name = input('Enter new client name : ')
+    red.print('Enter new client name : ')
+    name = input(' : ')
     if len(name) > 0:
         break
 
@@ -42,4 +48,7 @@ dest = join( accounting_clients_folder,  name)
 
 created = shutil.copytree(src, dest)
 
-print('\n', 'Created ==> ','\n', created, '\n')
+print()
+red.print('Created : ')
+print(created)
+print()

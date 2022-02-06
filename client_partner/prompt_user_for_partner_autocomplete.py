@@ -5,6 +5,9 @@ from config import vendor, customer, partner_code, partner_name, partner_account
 from .get_1_list_of_strings_for_partner import get_1_list_of_strings_for_partner
 from config import VENDORS_JSON_FILE, CUSTOMERS_JSON_FILE
 from .update_partner import update_partner
+from rich.console import Console
+red = Console(style="red")
+yellow = Console(style="yellow")
 
 
 def prompt_user_for_partner_autocomplete( reason, ptype=vendor ):
@@ -14,7 +17,8 @@ def prompt_user_for_partner_autocomplete( reason, ptype=vendor ):
     while True:
         completer = WordCompleter( partners_dict.keys() )
         print()
-        key = prompt("Enter "+ ptype +" for ==> " +  reason  + " : ", completer = completer)
+        red.print("Enter "+ ptype +" for ==> " +  reason )
+        key = prompt(" : ", completer = completer)
         print()
 
         if key in partners_dict:

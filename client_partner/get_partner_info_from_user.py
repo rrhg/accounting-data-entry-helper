@@ -1,5 +1,8 @@
 from config import vendor, customer
 from .get_1_list_of_strings_for_partner import get_1_list_of_strings_for_partner
+from rich.console import Console
+red = Console(style="red")
+yellow = Console(style="yellow")
 
 
 def get_partner_info_from_user( ptype=vendor ):
@@ -7,25 +10,29 @@ def get_partner_info_from_user( ptype=vendor ):
 
     code = ''
     while True:
-        code = input(" Enter "+ ptype +" code (max 20 char): " )
+        red.print(" Enter "+ ptype +" code (max 20 char): " )
+        code = input(" : " )
         if len(code) > 2 and len(code) <= 20:
             break
     
     name = ''
     while True:
-        name = input(" Enter "+ ptype +" name (max 39 char): " )
+        red.print(" Enter "+ ptype +" name (max 39 char): " )
+        name = input(" : " )
         if len(name) > 2 and len(name) <= 39:
             break
 
     memo = ''
     while True:
-        memo = input(" Enter "+ ptype +" memo (max 30 char): " )
+        red.print(" Enter "+ ptype +" memo (max 30 char): " )
+        memo = input(" : " )
         if len(memo) > 2 and len(memo) < 31:
             break
 
     account = ''
     while True:
-        account = input(" Enter "+ ptype +" account: " )
+        red.print(" Enter "+ ptype +" account: " )
+        account = input(" : " )
         if len(account) > 0:
             break
     
@@ -33,7 +40,8 @@ def get_partner_info_from_user( ptype=vendor ):
     vtype = '' # vtype == vendor type ; ptype == partner type
     if ptype == vendor:
         while True:
-            vtype = str( input(" Enter vendor vtype: only a 0(None) or 1(Interest) or 2(Independent Contractor): " ) )
+            red.print(" Enter vendor vtype: only a 0(None) or 1(Interest) or 2(Independent Contractor): " )
+            vtype = str( input(" : " ) )
             if vtype in ['0','1','2']:
                 break
     else:

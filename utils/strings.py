@@ -1,4 +1,7 @@
 import re
+from rich.console import Console
+red = Console(style="red")
+yellow = Console(style="yellow")
 
 
 def start_w_dollar_sign(string):
@@ -56,16 +59,20 @@ def try_convert_amount_to_float( amount_str_received , transaction_dict, line = 
     except:
         print()
         # print( ' could not convert str to float in utils.strings.try_convert_amount_to_float(). The str was ==> ', amount_str_received )
-        print( ' ==> Could not convert amount to float. The amount was ==> ', amount_str_received )
-        print( ' ==> the transaction was ==>  ', transaction_dict)
+        red.print( ' ==> Could not convert amount to float. The amount was : ')
+        print( amount_str_received )
+        red.print( ' ==> the transaction was :  ')
+        print(transaction_dict)
         if line != '':
-            print(' ==> line was ==> ', line)
+            red.print(' ==> line was ==> ')
+            print( line)
         # if caller != '':
             # print(' ==> caller function was ==> ', caller)
         print()
         
         while True:
-            a = input('Enter a valid amount: ')
+            red.print('Enter a valid amount :')
+            a = input(' : ')
             try:
                 amount = to_float( a )
                 return amount
