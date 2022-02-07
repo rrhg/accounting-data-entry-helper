@@ -17,5 +17,5 @@ def convert_credit_lines_into_transactions( found_lines, transactions ):
             if customer_key: # when is false, user chosed option to ignore line & we dont need to add any transaction
                 t = client_partner.get_credit_transaction_from_line( customer_key, line, previous_line ,ignore_date=False )
                 transactions.append( t )
-                t.print_trans_added( line )
+                t.print_trans_added( line, previous_line )
         previous_line = line # even if line was ignored, it is still the previous line & we maight need to get the amount from it.

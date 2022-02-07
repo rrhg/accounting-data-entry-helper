@@ -24,10 +24,11 @@ def prompt_user_for_partner_autocomplete( reason, ptype=vendor ):
         if key in partners_dict:
             break
 
-    """ TODO : is this always true ??? """
-    """ If we got here is bc user thinks the client_partner exist, but the script did not found the partner """
-    """ Need to add strings to find partner next time.  """
-    if key != 'create new vendor':
+    """
+        Give user the option to add strings to this partner, so that next time, it won't ask
+        If we got here is bc user thinks the client_partner exist, but the script did not found the partner
+    """
+    if key != 'create new vendor' or key != 'create new customer':
         user_strings = get_1_list_of_strings_for_partner(ptype)
         if len( user_strings ) > 0:
             update_partner( key, strings_list=user_strings, ptype=ptype, utype=partner_strings )

@@ -17,7 +17,7 @@ def main():
     for c in customers:
         # print( c['code'], c['name'], c['account'] )
         add_to_json_file( c, ptype=customer) # to update file with all partners(do we need a database?) 
-
+        """ Append, do not overwrite. There is one harcoded -> create new """
 
 if __name__ == '__main__':
     main()

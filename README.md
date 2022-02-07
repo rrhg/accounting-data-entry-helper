@@ -65,6 +65,7 @@ Input formats:
 TODO :  
 1. Tesseract is saving too much images. Find a way to not save images in disk (use only in memory) or delete them after use
 1. Fix get one csv row from file & rm folder
+1. Option to not add returned checks (credits)
 1. Better explanations in example client functions
 1. csv to txt
 1. Tesseract OCR instructions

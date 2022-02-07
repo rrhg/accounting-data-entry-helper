@@ -1,2 +1,12 @@
 {
+    "create new customer": {
+        "code": "create new customer",
+        "name": "create new customer",
+        "account": "4000",
+        "description": "",
+        "strings": [
+            [
+            ]
+        ]
+    }
 }

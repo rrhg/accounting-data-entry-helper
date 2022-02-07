@@ -43,11 +43,10 @@ def ask_to_create_partner_or_ignore_line(line, previous_line, ptype=vendor, msg_
         if a == '1': 
             partner_key = prompt_user_for_partner_autocomplete( 'this line', ptype=ptype)
 
-            if partner_key == 'create new vendor':
+            if partner_key == 'create new vendor' or partner_key == 'create new customer':
                 partner_info_dict = create_and_add_partner( line, previous_line, ptype=ptype ) # get info from user. Pass an '' bc is expecting the line(as a string) but in a check we dont have vendor info
                 # TODO fix partner_info_dict ===>>>>> {'code': code, 'name': name, 'memo':memo, 'account': account, 'type': vtype, 'strings': strings }
-                partner_key = partner_info_dict['code'] 
-          
+                partner_key = partner_info_dict['code']
             return partner_key
             
 
