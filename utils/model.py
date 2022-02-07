@@ -14,11 +14,10 @@ class Model:
         self.backup_model_file()
         self.model = self.load_model()
         self.logs = False
-        """
         print('==>  model was loaded (hopefully only once) <==================================================================================================================================================================================================================================================================================================================================================================')    
         print()
         self.print_partners_prob('no line available at module creation')
-        """
+
 
 
     def predict_partner(self, line):
