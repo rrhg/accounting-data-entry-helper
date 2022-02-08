@@ -71,6 +71,10 @@ TODO :
 1. Tesseract OCR instructions
 1. Clients git backup
 1. Model(river library) for learning & predicting vendor/customer per line
+   1. For now appears to be working  
+   1. Only for vendors/debits. 
+   1. Need to pass transaction type to model, so that it does not train on credits.
+   1. For now, credits.py is not saving it, so the training from credits is been lost. That is the expected behavior for now.
 1. Option to choose different account # than vendor default
 1. Tests
 1. Github Actions
