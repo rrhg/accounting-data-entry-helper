@@ -1,6 +1,7 @@
 
 
-def add_module_attrs_to_globals(module, globals): 
+
+def add_module_attrs_to_globals(module, globals_dict): 
     # https://stackoverflow.com/questions/43059267/how-to-do-from-module-import-using-importlib
     # is there an __all__?  if so respect it
     if "__all__" in module.__dict__:
@@ -8,8 +9,10 @@ def add_module_attrs_to_globals(module, globals):
     else:
         # otherwise we import all names that don't begin with _
         names = [x for x in module.__dict__ if not x.startswith("_")]
+
     # now drag them in
-    globals().update({k: getattr(module, k) for k in names})
+    globals_dict.update({k: getattr(module, k) for k in names})
+
 
 
 # NOTE: below is another version with code that could work for any dir
