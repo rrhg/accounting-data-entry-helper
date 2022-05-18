@@ -63,6 +63,7 @@ Input formats:
 
   
 TODO :  
+1. Remove \n \r from lines at decoding pdf
 1. Tesseract is saving too much images. Find a way to not save images in disk (use only in memory) or delete them after use
 1. Fix get one csv row from file & rm folder
 1. Option to not add returned checks (credits)
