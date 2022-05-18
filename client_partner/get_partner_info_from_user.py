@@ -40,8 +40,9 @@ def get_partner_info_from_user( ptype=vendor ):
     vtype = '' # vtype == vendor type ; ptype == partner type
     if ptype == vendor:
         while True:
-            red.print(" Enter vendor vtype: only a 0(None) or 1(Interest) or 2(Independent Contractor): " )
-            vtype = str( input(" : " ) )
+            red.print(r'Vendor Type:')
+            red.print(r' Press [Enter] for 0(None) or write 1(Interest) or 2(Independent Contractor): ' )
+            vtype = str( input(" : " ) or '0' )
             if vtype in ['0','1','2']:
                 break
     else:

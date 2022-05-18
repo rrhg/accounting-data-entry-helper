@@ -29,10 +29,9 @@ def ask_to_create_partner_or_ignore_line(line, previous_line, ptype=vendor, msg_
     print()
     red.print('1- Choose an existing '+ ptype )
     red.print('2- Choose the suggested partner :'+ str(predicted_vendor_code) )
-    red.print('3- Create a new '+ ptype)
-    red.print('4- Ignore line for ever (add line to ignored lines)')
-    red.print('5- Ignore line just this time')
-    red.print('6- Test the model')
+    red.print('3- Ignore line for ever (add line to ignored lines)')
+    red.print('4- Ignore line just this time')
+    # red.print('6- Test the model')
 
 
     while True:
@@ -55,19 +54,7 @@ def ask_to_create_partner_or_ignore_line(line, previous_line, ptype=vendor, msg_
             return partner_key
 
 
-        if a == "3":
-            print()
-            red.print('==== creating a '+ ptype +' ========================')
-            print()
-            vendor_dict = create_and_add_partner(line, previous_line, ptype=ptype)
-
-            # vendor_dict ===>>>>> {'code': code, 'name': name, 'memo':memo, 'account': account, 'type': vtype, 'strings': strings }
-            partner_key = vendor_dict['code'] # = = = = = = = = = = = = = = = = 
-
-            return partner_key
-
-
-        if a == '4':
+        if a == '3':
             print()
             red.print('ignoring line forever by adding it to ignored lines json file')
             print( repr(line) )
@@ -81,19 +68,19 @@ def ask_to_create_partner_or_ignore_line(line, previous_line, ptype=vendor, msg_
             return False
 
 
-        if a == '5':                    
+        if a == '4':                    
             print()
             red.print('Ignoring line just this time')
             print()
             return False
 
 
-        if a == '6':
-            print()
-            l = input(' Enter a line to make a prediction')
-            test_prediction = model.predict_partner(l)
-            yellow.print('predicted == ', test_prediction)
-            model.print_partners_prob(line)
-            print()
-            """ Do nothing. While loop will ask again"""
-            # return False 
+        # if a == '6':
+        #     print()
+        #     l = input(' Enter a line to make a prediction')
+        #     test_prediction = model.predict_partner(l)
+        #     yellow.print('predicted == ', test_prediction)
+        #     model.print_partners_prob(line)
+        #     print()
+        #     """ Do nothing. While loop will ask again"""
+        #     # return False 
