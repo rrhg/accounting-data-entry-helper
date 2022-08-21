@@ -1,6 +1,8 @@
 from config import client, debit, credit, STATEMENT_DATA_FILE
 from utils.strings import try_convert_amount_to_float
-
+from rich.console import Console
+red = Console(style="red")
+yellow = Console(style="yellow")
 
 def compare_sums_of_debits(processed_transactions):
     compare_sums_of_transactions(processed_transactions, STATEMENT_DATA_FILE, trans_type=debit)
@@ -36,10 +38,10 @@ def compare_sums_of_transactions(processed_transactions, statement_data_file, tr
         from_statement = client.get_credits_total_from_statement(statement_data_file)
 
     if from_statement != after_processing:
-        print('TRANSACTIONS TOTAL IS  NOT  BALANCED. !!!!!!!!!')
-        print(" One way to fix can be to go to the resulrs.txt (data extracted from the bank statement pdf) & correct it. Maybe data was not read correctly bc it first converted to an image (jpeg)")
+        red.print('TRANSACTIONS TOTAL IS  NOT  BALANCED. !!!!!!!!!')
+        red.print(" One way to fix can be to go to the resulrs.txt (data extracted from the bank statement pdf) & correct it. Maybe data was not read correctly bc it first converted to an image (jpeg)")
     else:
-        print("TRANSACTIONS TOTAL IS BALANCED. DATA WAS READ CORRECTLY")
+        red.print("TRANSACTIONS TOTAL IS BALANCED. DATA WAS READ CORRECTLY")
     print(" ==> in statement", from_statement)
     print(" ==> after read data", after_processing)
     diff = from_statement - after_processing

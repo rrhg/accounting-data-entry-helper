@@ -10,9 +10,12 @@ def extract_cks_lines(lines):
     other_lines = []
     previous_line = ''
 
+    
     for line in lines:
         if client.is_a_line_of_checks( line, previous_line ):
+            # print('== line bf clean', line)
             line = client.clean_ck_line( line )
+            # print('== line after clean', line)
             checks_lines.append( line )
         else:
             other_lines.append( line )

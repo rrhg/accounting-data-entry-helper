@@ -19,21 +19,21 @@ def get_already_entered_ck_info( ck_number, ENTERED_CHECKS_FILE ):
     exit()
     # return False
 
-def get_trans_from_vendor_dict( vendor_dict ):
-    bank_account = client.get_bank_account()
-    d = vendor_dict
-    t = transaction()
+# def get_trans_from_vendor_dict( vendor_dict ):
+#     bank_account = client.get_bank_account()
+#     d = vendor_dict
+#     t = transaction()
 
-    t.partner_key = d['vendor_key']
-    t.partner_code = d['vendor_key']
-    t.partner_name = d['name']
-    t.amount = d['amount']
-    t.ck_number = d['ck_number']
-    t.is_check = d['is_check'] 
-    t.date = d['date']
-    t.memo = d['memo']
-    t.account = d['account']
-    t.bank_account = bank_account
-    t.internal_period_number = INTERNAL_PERIOD_NUMBER
+#     t.partner_key = d['vendor_key']
+#     t.partner_code = d['vendor_key']
+#     t.partner_name = d['name']
+#     t.amount = d['amount']
+#     t.ck_number = d['ck_number']
+#     t.is_check = d['is_check'] 
+#     t.date = d['date']
+#     t.memo = d['memo']
+#     t.account = d['account']
+#     t.bank_account = bank_account
+#     t.internal_period_number = INTERNAL_PERIOD_NUMBER
 
-    return t
+#     return t

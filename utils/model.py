@@ -6,18 +6,19 @@ from datetime import datetime
 from utils.strings import clean_line_for_training
 from rich.console import Console
 yellow = Console(style="yellow")
-
+red = Console(style="red")
 
 class Model:
-    def __init__(self, file_path):
+    def __init__(self, file_path, logs=False):
+        # TODO: create a singleton
         self.MODEL_FILE = file_path
         self.backup_model_file()
         self.model = self.load_model()
-        self.logs = False
-        print('==>  model was loaded (hopefully only once) <==================================================================================================================================================================================================================================================================================================================================================================')    
-        print()
-        self.print_partners_prob('no line available at module creation')
-
+        self.logs = logs
+        if self.logs:
+            yellow.print('==>  model was loaded (hopefully only once) <==================================================================================================================================================================================================================================================================================================================================================================')    
+            print()
+            self.print_partners_prob('no line available at module creation')
 
 
     def predict_partner(self, line):
@@ -64,16 +65,23 @@ class Model:
 
     def save_model(self):
         """ Only once, when script finish- should we ask to save? """        
-        a = input('Do you want to save the model trained with the new transactions ?  (y/n)')
+
+        if self.logs:        
+            red.print('Do you want to save the model trained with the new transactions ?')
+        else:
+            red.print('All vendors are correct ?')
+
+        a = input('(y/n): ')
         while True:
             if a == 'n' or a == 'N':
                 return
             if a == 'y' or a == 'Y':
                 with open(self.MODEL_FILE, 'wb') as f:
                     pickle.dump(self.model, f)
-                print()
-                print('    ==>   model was saved')
-                print()
+                if self.logs:
+                    print()
+                    yellow.print('    ==>   model was saved')
+                    print()
                 return
 
 

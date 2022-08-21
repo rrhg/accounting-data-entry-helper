@@ -21,6 +21,16 @@ def convert_imported_customer_csv_row_to_dict( csv_row, partner_dict ):
     return dict_copy
 
 
+def convert_imported_account_csv_row_to_dict( csv_row ):
+    """ This function is only used when importing accounts from csv file. For example: 1- you created a new client here using new_client.py. 2- exported the client vendors from the accounting software to a csv file. 3- added the file w full path to clien/functions/files.file_with_new_vendors_to_import(). 4- import vendors here with import_vendors.py """
+    # c = partner_dict.copy()
+    account = {}
+    """ csv_row has already been converted to a list """
+    account['number'] = csv_row[0]
+    account['name'] = csv_row[1]
+    return account
+
+
 def convert_imported_vendor_csv_row_to_dict( csv_row, partner_dict ):
     """ This function is only used when importing vendors from csv file. For example: 1- you created a new client here using new_client.py. 2- exported the client vendors from the accounting software to a csv file. 3- added the file w full path to clien/functions/files.file_with_new_vendors_to_import(). 4- import vendors here with import_vendors.py """
     c = partner_dict.copy()

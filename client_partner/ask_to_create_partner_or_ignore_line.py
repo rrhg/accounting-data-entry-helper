@@ -27,8 +27,8 @@ def ask_to_create_partner_or_ignore_line(line, previous_line, ptype=vendor, msg_
 
     print(line)
     print()
-    red.print('1- Choose an existing '+ ptype )
-    red.print('2- Choose the suggested partner :'+ str(predicted_vendor_code) )
+    red.print('1- Choose a '+ ptype )
+    red.print('2- Choose the suggested '+ptype+' :'+ str(predicted_vendor_code) )
     red.print('3- Ignore line for ever (add line to ignored lines)')
     red.print('4- Ignore line just this time')
     # red.print('6- Test the model')
@@ -36,7 +36,7 @@ def ask_to_create_partner_or_ignore_line(line, previous_line, ptype=vendor, msg_
 
     while True:
         print()
-        red.print('Enter a number from 1 to 6: ')
+        red.print('Enter a number from 1 to 4: ')
         a = str( input(' : ') )
     
         if a == '1': 

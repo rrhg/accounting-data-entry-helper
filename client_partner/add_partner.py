@@ -21,11 +21,15 @@ def add_to_json_file(partner_dict, ptype=vendor):
     # TODO fix partner_dict. Should it be a class. ?
     new = { 
         partner_dict['code']: {
-            "code": partner_dict['code'],
-            "name": partner_dict['name'],
-            "account": partner_dict['account'],
-            "description": partner_dict['memo'],
-            "strings":  partner_dict['strings'] # list of lists
+            "code":                 partner_dict['code'],
+            "name":                 partner_dict['name'],
+            "account":              partner_dict['account'],
+            "account_can_change":    partner_dict['account_can_change'],
+            "description":          partner_dict['memo'],
+            "affects_more_than_1_account":    partner_dict['affects_more_than_1_account'],
+            "accounts":             partner_dict['accounts'],
+            "split_amount_in_half": partner_dict['split_amount_in_half'],
+            "strings":              partner_dict['strings'], # list of lists
         }}
 
     pfile = VENDORS_JSON_FILE

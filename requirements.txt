@@ -9,3 +9,14 @@ pexpect==4.6.0
 cmake==3.22.1
 typer==0.4.0
 rich==10.16.2
+river==0.11.1
+opencv-python
+PyPDF2
+
+# for detectron2
+pip instal pytorch
+python -m pip install pyyaml==5.1
+python -m pip install 'git+https://github.com/facebookresearch/detectron2.git'
+pip install boto3[crt]
+pip install SQLAlchemy
+pip install alembic # Successfully installed Mako-1.2.1 alembic-1.8.1

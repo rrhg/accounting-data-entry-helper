@@ -4,6 +4,12 @@ red = Console(style="red")
 yellow = Console(style="yellow")
 
 
+def number(string):
+    if string == '':
+        string = 0
+    return round( float(string), 2)
+
+
 def start_w_dollar_sign(string):
     return bool(re.search('^\$', string ))
 
@@ -35,8 +41,8 @@ def clean_line_for_training(line):
     return line
 
 
-def try_convert_amount_to_float( amount_str_received , transaction_dict, line = '', caller = ''):
-
+def try_convert_amount_to_float( amount_str_received , transaction, line = '', caller = ''):
+    
     def fix_comma_instead_of_decimal_point(str_amount):
         if bool( re.search(',\d\d$', str_amount) ):
             indexes = [i for i, char in enumerate(str_amount) if char == ',']
@@ -57,24 +63,32 @@ def try_convert_amount_to_float( amount_str_received , transaction_dict, line = 
         amount = to_float( corrected_amount_str )
         return amount
     except:
-        print()
-        # print( ' could not convert str to float in utils.strings.try_convert_amount_to_float(). The str was ==> ', amount_str_received )
-        red.print( ' ==> Could not convert amount to float. The amount was : ')
-        print( amount_str_received )
-        red.print( ' ==> the transaction was :  ')
-        print(transaction_dict)
-        if line != '':
-            red.print(' ==> line was ==> ')
-            print( line)
-        # if caller != '':
-            # print(' ==> caller function was ==> ', caller)
-        print()
-        
-        while True:
-            red.print('Enter a valid amount :')
-            a = input(' : ')
-            try:
-                amount = to_float( a )
-                return amount
-            except:
-                pass
+        red.print("\n ==> Could not convert amount to float")
+
+    def print_trans():
+        t = transaction
+        trans_type = type(t)
+        yellow.print("\nTransactions details")        
+        yellow.print(f"The amount_str received was : {amount_str_received}" )
+        yellow.print(f"trans_type: {trans_type}")
+        if trans_type is dict:
+            yellow.print(f"partner_name = {t.get(partner_name, None)}" )
+            yellow.print(f"amount = {t.get(amount, None)}" )
+            yellow.print(f"date = {t.get(date, None)}" )
+        else:
+            yellow.print(f"transaction: {t}")
+
+    print_trans()
+    red.print('\n ==> line was ==> ')
+    print( line)
+    red.print(' ==> caller function was: ', caller)
+    print()
+    
+    while True:
+        red.print('Enter a valid amount :')
+        a = input(' : ')
+        try:
+            amount = to_float( a )
+            return amount
+        except:
+            pass

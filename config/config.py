@@ -25,6 +25,7 @@ clients = get_clients_names_from_dir(PATH_FOR_CLIENTS)
 """
 
 
+
 # current client
 print()
 red.print( 'Select a client : ' )
@@ -35,27 +36,30 @@ client = imported_client_module.client
 
 PATH_THIS_CLIENT = create_dir_w_parents( join(PATH_FOR_CLIENTS, client_name )  )
 
+ACCOUNTS_JSON_FILE = PATH_THIS_CLIENT / 'accounts.json'
 
 # bank statement files
 statement_folder = 'bank_statement'
-PATH_BANK_STATEMENT_DIR = create_dir_w_parents( PATH_THIS_CLIENT / statement_folder )
-STATEMENT_DATA_FILE = client.get_txt_input_file_path(PATH_BANK_STATEMENT_DIR)
-STATEMENT_PDF = client.get_pdf_statement_file_path(PATH_BANK_STATEMENT_DIR)
+INTERNAL_BANK_STATEMENTS_DIR = create_dir_w_parents( PATH_THIS_CLIENT / statement_folder )
+STATEMENT_DATA_FILE = client.get_txt_input_file_path(INTERNAL_BANK_STATEMENTS_DIR)
+EXTERNAL_BANK_STATEMENTS_DIR = Path(client.bank_statements_dir)
+
 
 
 # images of pdf statement to be converted by tesseract to text
-# TODO should we a find a way to not save tesseract images in disk
+# TODO should we a find a way to not save tesseract images in disk but now saving them to improve background
+
 PATH_TESSERACT_IMAGES_DIR = create_dir_w_parents(
-    PATH_BANK_STATEMENT_DIR / 'tesseract_images'
+    INTERNAL_BANK_STATEMENTS_DIR / 'tesseract_images'
 )
+
 
 
 # model
 model_folder = 'model'
 model_file_name = 'model.pkl'
 model_file = PATH_THIS_CLIENT / model_folder / model_file_name
-model = Model(model_file)
-
+model = Model(model_file, logs=client.print_model_logs())
 
 # periods
 periods = client.get_periods()
@@ -69,6 +73,27 @@ VENDOR_CREATED_DATE = DATE_BEG_OF_PERIOD
 DATE_FOR_TRANSACTIONS = DATE_END_OF_PERIOD
 YEAR_FOR_DATE = DATE_END_OF_PERIOD.split('/')[-1]
 
+
+statement_file_name = PERIOD + ' BANK STATEMENT ' + client_name.upper() + '.pdf'
+STATEMENT_PDF = EXTERNAL_BANK_STATEMENTS_DIR / YEAR_FOR_DATE / statement_file_name
+# bc some like NLR will has 2 bank statements
+if hasattr(client, 'get_pdf_statement_file_path'):
+    STATEMENT_PDF = client.get_pdf_statement_file_path()
+
+# scaled copy of statement pdf ==>> for better results when converting to txt
+folder_for_scaled_pdf = INTERNAL_BANK_STATEMENTS_DIR / 'scaled copy of statement'
+folder_for_scaled_pdf.mkdir(parents=True, exist_ok=True)
+scaled_file_name = 'scaled_' + str(STATEMENT_PDF.name)
+IMPROVED_STATEMENT_PDF = folder_for_scaled_pdf / scaled_file_name
+
+
+# cks images dirs
+CHECKS_IMAGES_DIR = create_dir_w_parents(
+    INTERNAL_BANK_STATEMENTS_DIR / 'checks_images' / PERIOD
+)
+CKS_PAYEES_IMAGES_DIR = create_dir_w_parents(
+    INTERNAL_BANK_STATEMENTS_DIR / 'cks_payees_images'
+)
 
 
 # output

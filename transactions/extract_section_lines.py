@@ -1,5 +1,7 @@
 from config import client, debit, credit
 from rich.console import Console
+from utils.other import ask_to_continue
+
 red = Console(style="red")
 
 
@@ -63,12 +65,6 @@ def extract_section_lines(lines, trans_type=debit):
             # so that last line is included
             STOP_SEARCHING_FOR_ENDING_LINE = True
 
-
-
-
-    # global LINE_NUMBER
-    # nonlocal LINE_NUMBER
-    
     cleaned_lines = []
     previous_line = ''
 
@@ -85,6 +81,15 @@ def extract_section_lines(lines, trans_type=debit):
             # print(line)
             cleaned_lines.append(line)
         previous_line = line
+
+    if not FOUND_STARTING_LINE:
+        red.print('\n Did not found starting '+ trans_type +' line. ')
+        red.print('Posible solution: In client functions change "is_1st_line_of_'+ trans_type + 's()"')
+        ask_to_continue()
+    elif not FOUND_ENDING_LINE:
+        red.print('\n Did not found ending '+ trans_type +' line. : ')
+        red.print('Posible solution: In client functions change "is_last_line_of_'+ trans_type + 's()"')
+        ask_to_continue
 
     return cleaned_lines
 

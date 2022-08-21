@@ -16,5 +16,6 @@ def decode_lines(statement_text_file):
                     pass
             
             if decoded and is_not_a_blanc_line(line):
+                line = line.replace('\n', '').replace('\r', '')
                 lines.append(line)
     return lines

@@ -15,8 +15,12 @@ def convert_lines_into_transactions( all_lines, found_lines, trans_type=debit ):
     if trans_type == debit:
         """ do this first in case can not find bank charges, script will ask if user wants to continue """
         if client.there_are_additional_bank_charges_outside_debits_lines():
-            not_found_lines = [l for l in all_lines if l not in found_lines]
-            search_and_add_transactions_from_bank_charges( not_found_lines, transactions )
+            
+            if hasattr(client, 'search_for_bank_charges_in_all_files'):
+                search_and_add_transactions_from_bank_charges( all_lines, transactions )
+            else:
+                not_found_lines = [l for l in all_lines if l not in found_lines]
+                search_and_add_transactions_from_bank_charges( not_found_lines, transactions )
 
         checks_lines, non_ck_debit_lines = extract_cks_lines(found_lines)
 

@@ -28,7 +28,8 @@ def prompt_user_for_partner_autocomplete( reason, ptype=vendor ):
         Give user the option to add strings to this partner, so that next time, it won't ask
         If we got here is bc user thinks the client_partner exist, but the script did not found the partner
     """
-    if key != 'create new vendor' or key != 'create new customer':
+    
+    if key != 'create new vendor' and key != 'create new customer' and key != 'do not create new vendor':
         user_strings = get_1_list_of_strings_for_partner(ptype)
         if len( user_strings ) > 0:
             update_partner( key, strings_list=user_strings, ptype=ptype, utype=partner_strings )

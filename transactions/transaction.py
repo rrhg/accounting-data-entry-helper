@@ -7,6 +7,11 @@ from rich import print
 from rich.console import Console
 blue_console = Console(style="white on blue")
 
+class transaction_type:
+    bank_charge = 'bank_charge'
+    check = 'check'
+    other = 'other'
+
 # TODO should this have defaults for credits & debits ? 
 class transaction:
     line_has_2_debits = False # TODO can this be deleted
@@ -23,10 +28,18 @@ class transaction:
     bank_account = ''
     internal_period_number = ''
     transaction_number = ''
+    how_many_accounts = 0
+    accounts = []
+    amounts = []
+    ttype = ''
+
 
     def log_and_train(self, line, previous_line):
         self.print_trans_added(line, previous_line)
         self.train_model(line, previous_line)
+
+    def log_without_train(self, line, previous_line):
+        self.print_trans_added(line, previous_line)
 
     def train_model(self, line, previous_line):
         # TODO should we use the previous line to train the model?

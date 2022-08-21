@@ -1,7 +1,11 @@
 from utils import lines, dates
 import client_partner
-from config import client, DATE_END_OF_PERIOD
+from config import client, DATE_END_OF_PERIOD, PATH_FOR_OUTPUT, PERIOD
 from rich.console import Console
+import config
+from utils.other import ask_to_continue
+
+
 red = Console(style="red")
 
 
@@ -18,6 +22,8 @@ def search_and_add_transactions_from_bank_charges( all_lines, transactions ):
     previous_line = ''
     found = False
 
+    charges_for_reconciliation = [] # to create a file with bank charges
+
     for line in all_lines:
         """ TODO: this func should be called line_contains_bank_charges_outside_debit_lines()"""
 
@@ -26,29 +32,35 @@ def search_and_add_transactions_from_bank_charges( all_lines, transactions ):
 
             red.print('Found a bank charge outside of debits seccion. line : ')
             print(line)
-            # a = input('hit enter')
             red.print()
         
             vendor_key = client_partner.find_vendor_in_line_or_ask(line, previous_line, msg_if_not_found='Did not find vendor in bank charges line')
 
             if vendor_key:
-                t = client_partner.get_debit_transaction_from_line( vendor_key, line, previous_line ,ignore_date=False )
-
-                if t:
-                    transactions.append( t )
-                    t.log_and_train( line, previous_line )
+                # new_transactions = client_partner.get_debit_transaction_from_line( vendor_key, line, previous_line ,ignore_date=False )
+                new_transactions = client_partner.get_debit_transaction_from_bank_charge_line( vendor_key, line, previous_line ,ignore_date=False )
+                if new_transactions: # sometimes amount == 0 & the line is been ignored
+                    for t in new_transactions:
+                        transactions.append( t )
+                        t.log_and_train( line, previous_line )
+                        charges_for_reconciliation.append([t.date, t.amount])
             else:
                 pass
 
         previous_line = line # even if line was ignored temporarily by user, it is still the previous line
 
+    # # if hasattr(client, 'create_charges_file_for_reconciliation'):
+    # if hasattr(client, 'get_bank_charges_for_external_reconciliation'):
+    #     client.get_bank_charges_for_external_reconciliation( charges_for_reconciliation, config)
+
     if not found:
-        red.print()
+        red.print()     
         red.print('Did not found any line with bank charges, 🤔, (when searching outside of debits seccion)')
         # print(f'The string "{string_to_find}" in clients/functions/string_in_line_w_total_bank_charges() was not found on any line')
         red.print()
-        a = input('Do you want to continue ? y or n : ')
-        if a == 'n' or a == 'N':
-            exit()
-        else:
-            pass
+        ask_to_continue()
+        # a = input('Do you want to continue ? y or n : ')
+        # if a == 'n' or a == 'N':
+        #     exit()
+        # else:
+        #     pass

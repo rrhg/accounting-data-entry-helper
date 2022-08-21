@@ -19,6 +19,5 @@ def main():
         # print( c['code'], c['name'], c['account'] )
         add_to_json_file( c, ptype=vendor) # to update file with all partners(do we need a database?) 
 
-
 if __name__ == '__main__':
     main()

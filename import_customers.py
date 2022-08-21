@@ -4,6 +4,7 @@ from utils.csv2.get_csv_rows import get_csv_rows
 from client_partner.partner_dict import partner_dict
 
 
+
 def main():
     csv_file = client.file_with_new_customers_to_import()
     rows = get_csv_rows( csv_file )
