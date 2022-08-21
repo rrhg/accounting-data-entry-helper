@@ -29,7 +29,7 @@ def get_or_create_vendor_dict_from_ck_line(
     date = client.get_date_from_ck_line( ck_line )
     date = try_convert_date( date, ck_line)
 
- 
+
     # previously we automatiacally prompted for a vendor
     # vendor_key = prompt_user_for_partner_autocomplete(ck_number)
 
@@ -37,10 +37,11 @@ def get_or_create_vendor_dict_from_ck_line(
     #    1- search for a vendor w strings that match infered payee
     #    2- if not ask to :choose(prompt) vendor, ignore, etc
     infered_payee = get_infered_payee_from_ck_image(ck_number)
+    if infered_payee == "":
+        infered_payee = "could not infer payee from check"
     previous_line = ""
     vendor_key = client_partner.find_vendor_in_line_or_ask(
         ck_line, previous_line, infered_payee_in_ck_image=infered_payee )
-
 
     # not anymore. now done in previous function
     # if vendor_key == 'create new vendor':
@@ -48,7 +49,6 @@ def get_or_create_vendor_dict_from_ck_line(
     #     vendor_info_dict = create_and_add_partner( ck_line, 'no previous line available' ) # get info from user. Pass an '' bc is expecting the line(as a string) but in a check we dont have vendor info
     #     # vendor_info_dict ===>>>>> {'code': code, 'name': name, 'memo':memo, 'account': account, 'type': vtype, 'strings': strings }
     #     vendor_key = vendor_info_dict['code'] 
-
 
     vendors_dict = get_all( ptype=vendor ) # get a new one bc we just added a new vendor_key
 
