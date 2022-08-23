@@ -3,13 +3,13 @@
 def find_strings_in_line(line,
                          previous_line,
                          partners_dict,
+                         is_check=False,
                          infered_payee_in_ck_image=""):
 
-    if (infered_payee_in_ck_image == "could not infer payee from check"
-        or
-        infered_payee_in_ck_image != ""
-        ):
-        # is a check
+    if is_check:
+        print(f"\n infered_payee_in_ck_image: =>{infered_payee_in_ck_image}<=. Make sure is empty str if not found. Bc if this returns other than '' when finds nothing, here, we could wrongly find a match for a wrong vendor")
+        if infered_payee_in_ck_image == "":
+            return False
         line_to_search = infered_payee_in_ck_image
         
     else: # is a non check line

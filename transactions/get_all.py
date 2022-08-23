@@ -42,6 +42,7 @@ def get_all(statement_text_file, trans_type=debit):
 
     transactions = convert_lines_into_transactions( all_lines, lines_btn_1st_and_last, trans_type=trans_type )
     
+    # only nlr
     if hasattr(client, 'create_reconciliation_file'):
         client.create_reconciliation_file(transactions, config, all_lines)
 

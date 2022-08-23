@@ -15,6 +15,10 @@ def compare_sums_of_transactions(processed_transactions, statement_data_file, tr
 
     # print('processed_transactions ==> ', processed_transactions)
 
+    print("====================================")
+    print(f"  Now comparing totals")
+    print(f"     Reminder: a problem here could be in client functions get_debits_total_from_statement. (En Vida lo arregle por la cantidad)\n")
+
     def get_total_after_processing(processed_transactions):
         total = 0
         for t in processed_transactions:

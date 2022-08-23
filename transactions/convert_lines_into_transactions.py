@@ -26,6 +26,9 @@ def convert_lines_into_transactions( all_lines, found_lines, trans_type=debit ):
 
         convert_checks_lines_into_transactions( checks_lines, transactions )
 
+        for l in non_ck_debit_lines:
+            print(l)
+        # import sys; sys.exit(0)
         convert_non_ck_lines_into_transactions( non_ck_debit_lines, transactions )
 
     if trans_type == credit:

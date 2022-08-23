@@ -9,78 +9,98 @@ from utils.clean_img import clean_img
 from utils.pdf.improve_pdf import improve_pdf
 from config import ( 
     STATEMENT_DATA_FILE, STATEMENT_PDF,
-    # PATH_TESSERACT_IMAGES_DIR, IMPROVED_STATEMENT_PDF,# not using improved pdf anymore, now we use the same pdf but only the images are cropped, resized & cleaned
-    PATH_TESSERACT_IMAGES_DIR,
+    PATH_TESSERACT_IMAGES_DIR, IMPROVED_STATEMENT_PDF,
     client_name, client)
+from rich.console import Console
 from settings import tesseract_path
 from tempfile import TemporaryDirectory
 
-from rich.console import Console
 red = Console(style="red")
 yellow = Console(style="yellow")
 
+# pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
+# So that it knows how to call teserract.
+# In other machines might be: pytesseract.pytesseract.tesseract_cmd = r'C:\Users\<user>\AppData\Local\Tesseract-OCR\tesseract.exe'
 pytesseract.pytesseract.tesseract_cmd = tesseract_path
 
-
+# def pdf2txt( use_temp_dir_for_imgs=True):
 def pdf2txt( use_temp_dir_for_imgs=False):
-    # DO NOT USE TEMP DIR BC WE STILL HAVE TO LOOK AT IMAGES TO CHECK IF CROP & RESIZE ARE OK FOR EACH CLIENT
-
-    red.print('\nConverting PDF to txt ==> ');print( STATEMENT_PDF );print()
+    improve_pdf( # scale, etc
+        input_path=str(STATEMENT_PDF),
+        output_path=str(IMPROVED_STATEMENT_PDF)
+    )
+    red.print('\nConverting PDF to txt ==> ');print( IMPROVED_STATEMENT_PDF );print()
 
     if use_temp_dir_for_imgs:
         with TemporaryDirectory() as images_dir:
-            _pdf2txt(STATEMENT_PDF, images_dir)
+            _pdf2txt(IMPROVED_STATEMENT_PDF, images_dir)
     else:
         pdf_file_name = STATEMENT_PDF.name
         images_dir = PATH_TESSERACT_IMAGES_DIR / pdf_file_name.replace('.pdf','')[0:20]
         if not os.path.exists(images_dir):
             os.makedirs(images_dir)
+        # TODO: wait! maybe can not avoid saving images bc we are also cleaning them. Maybe delete them after finish function. see below
+        _pdf2txt(IMPROVED_STATEMENT_PDF, images_dir)
 
-        _pdf2txt(STATEMENT_PDF, images_dir)
 
 
-def _pdf2txt(pdf_path, images_dir):
+def _pdf2txt(improved_pdf, images_dir):
+    # list_of_strings = []
+    # long_string = ''
     pdf_file_name = STATEMENT_PDF.name
     output_file = STATEMENT_DATA_FILE
-
     # DO NOT DELETE; clear the output file # needed bc below we are just appending
     f = open(output_file, '+w')
     f.close()
 
-    img_pages = convert_from_path(pdf_path)
-
+    img_pages = convert_from_path(improved_pdf)
     page_number = 1
     for page in img_pages:
         if page_number <= 20:
             image_name = "pg_"+str(page_number)+'_'+ pdf_file_name.replace('.pdf','.jpg')
             image_path = os.path.join(images_dir, image_name)
 
-            page = crop_pil_img_n_resize(page)
-
+            # TODO: check if posible clean page in memory & not have to write; old todo: maybe can not avoid saving images bc we are then cleaning them. Maybe delete after finish the convertion to text;  old todo; avoid having to save page. maybe f.write(pytesseract.image_to_string(page)) f.write("\n")
+            # page = crop_pil_img_n_resize(page, .10, .80, .10, .90)
+            page = crop_pil_img_n_resize(page, .01, .65, .10, .90)
             page.save(image_path) # write img to this path
+            
             clean_img(image_path, image_path) # clean some background shadows. Could be improved to clean in memory
 
             with open(output_file, 'a+', encoding='utf8') as f:
                 text = "=========== PAGE " + str(page_number) + " ======\n"
                 f.write(text)
+                # long_string += text
 
                 tesse_conf = (
                     #   r'--load_system_dawg 0' # nothing printed to txt file
                     # + r' --load_freq_dawg 0' # nothing printed to txt file
                     r'--psm 6' # Assume a single uniform block of text
                 )
+
                 text = pytesseract.image_to_string(image_path, config=tesse_conf)+"\n"
+                #f.write(unicode(pytesseract.image_to_string(image_path)+"\n")) # TODO why errors ?
 
                 f.write(text)
+                # long_string += text
 
+                # f.write("======= ========================= ==============\n")
             page_number = page_number + 1
+
 
     red.print('\nOutput text file was saved to ==> ')
     print(output_file, '\n')
+    print()
+    # list_of_strings = long_string.split('\n')
+    # return list_of_strings # maybe not needed bc we always want to be able to see the text file for debuging
 
 
-def crop_pil_img_n_resize(img):
-    scale,left,right,upper,bottom = client.scale_bank_pdf_to()
+crop_payee_areas_map = [
+    {"name":"vida","l":.17,"u":.30,"r":.70, "b":.44},
+]
+
+def crop_pil_img_n_resize(              img, left, right, upper, bottom):
+    """example: i=crop_pil_img_n_resize(img,  .01,   .65,   .10,    .97)"""
     w, h = img.size
     left = round(w * left ) # 
     right = round(w * right) # 
@@ -88,9 +108,10 @@ def crop_pil_img_n_resize(img):
     bottom = round(h * bottom) # 
     area = (left, upper,  right,  bottom)
     new = img.crop(area)
+    resize = 1.20
     new = new.resize(( 
-        round(w*scale), 
-        round(h*scale)
+        round(w*resize), 
+        round(h*resize)
         ))
     return new
 

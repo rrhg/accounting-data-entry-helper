@@ -1,5 +1,7 @@
+import pyautogui
 import time
 from db import my_sqlalchemy, my_alembic
+from db.cks_images import *
 
 """ For intructions see file db.instructions:
 """
@@ -16,7 +18,9 @@ def main():
     # my_sqlalchemy.create_client('vida')
     # time.sleep(10)
     # my_sqlalchemy.print_all_clients()
-    # my_sqlalchemy.print_all_cks_images()
+
+    delete_all_cks_images_for_period('2022-05')
+    print_all_cks_images_for_this_client()
 
     # l = my_sqlalchemy.get_cks_imgs_numbers_for_period("2022-05")
     # print(l.sort())
@@ -35,10 +39,9 @@ def main():
     #     print(ck.img_path)
     #     print(ck.payee)
 
-    print_all_window_titles()
+    # print_all_window_titles()
     # close_photos_window()
 
-import pyautogui
 def close_photos_window():
     l = [w for w in pyautogui.getAllWindows()]
     title = next(w.title for w in l if " " in w.title)

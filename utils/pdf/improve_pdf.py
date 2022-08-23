@@ -11,6 +11,7 @@ red = Console(style="red")
 yellow = Console(style="yellow")
 
 
+
 def improve_pdf(input_path, output_path):
     """
         Try to improve PDF to be converted to text by Tesserac

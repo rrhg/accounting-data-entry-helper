@@ -131,6 +131,7 @@ def infer_payee_txt_w_aws_textract(payee_img):
     )
     try:
         txt = response['Blocks'][1].get('Text') # bc img has only 1 line
+        txt = txt.strip()
     except:
         txt = 'textract not found'
     return txt
@@ -148,7 +149,10 @@ def infer_payee_txt_w_hugginface(payee_img):
         pixels = hugginface_TrOCR_processor(resized_img, return_tensors="pt").pixel_values 
         ids = hugginface_TrOCR_model.generate(pixels)
         txt = hugginface_TrOCR_processor.batch_decode(ids, skip_special_tokens=True)[0] 
-        return txt
+        txt = txt.strip()
+        # print(f"\n txt in extract_cks... infer... == {txt}")
+        # import sys; sys.exit(0)
+        return txt # does this return "" when finds nothing ? bc That's what we expect down the pipeline & we check against for matching a vendor strings
 
 
 # now is a method of CkImage class so can be called after we have the vendor & store it under this vendor for future model training
@@ -186,7 +190,6 @@ def infer_payee_txt_w_hugginface(payee_img):
 
 #     def show_ck_img(self):
 #         self.pil_img.show()
-
 
 
 def save_imgs_to_dir(pil_imgs, directory):
@@ -322,7 +325,7 @@ def infer_number_from_ck_numb_img(ck_number_img):
         text = pytesseract.image_to_string(ck_number_img, config=tesse_conf)
         text = text.strip()
     else:
-        text = 'Detectron2 did not found ck_number_img'
+        text = ''
     print(f"\n Infering_ck_number from ck_number_img with tesseract")
     print(f"\n ck_number: {text} \n")
     return text

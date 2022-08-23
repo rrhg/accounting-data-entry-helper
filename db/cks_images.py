@@ -11,6 +11,7 @@ from config import client, client_name
 from db.models import Base, Client, CkImage, clients_table, ck_img_table
 from .my_alembic import add_column_to_client_table
 from utils.other import ask_to_continue
+from utils.gui import close_photos_windows_app, activate_powershell
 from db.session import get_sqlalchemy_session
 
 
@@ -20,6 +21,7 @@ def get_current_client_id():
                 Client.name==client_name,
             ).one()
         return c.id
+        session.close()
 
 
 client_id = get_current_client_id()
@@ -34,6 +36,30 @@ def create_ck_image(path, period, client_name):
         # parece como si no hubiera q hacer session.add(ck_image)
 
         session.commit()
+        session.close()
+
+
+def delete_all_cks_images_for_period(period):
+    with get_sqlalchemy_session() as session:
+        l = session.query(CkImage).filter(
+            CkImage.period==period,
+            CkImage.client_id == client_id, 
+            ).all()
+        l.delete()
+        session.commit()
+        session.close()
+
+
+def print_all_cks_images_for_this_client():
+    with get_sqlalchemy_session() as session:
+        l = session.query(CkImage).order_by(
+                                           CkImage.period
+                                 ).filter(
+                                           CkImage.client_id == client_id
+                                 )
+        for i in l:
+            print(f"{i.period} ck#{i.ck_number} payee_txt_hugginface:{i.payee_txt_hugginface}")
+            # print("printing vars(client)")
 
 
 def get_all_cks_images():
@@ -53,9 +79,12 @@ def get_infered_payee_from_ck_image(ck_number):
             ask_to_continue()
         if l:
             img = l[0]
-            return img.payee_txt_hugginface,
+            txt = img.payee_txt_hugginface
         else:
-            return f"Did not found ck# {ck_number} in cks images for this client"
+            # return f"Did not found ck# {ck_number} in cks images for this client"
+            txt = ""
+        session.close()
+        return txt
 
 def show_ck_image_by_ck_number(ck_number):
     with get_sqlalchemy_session() as session:
@@ -68,13 +97,42 @@ def show_ck_image_by_ck_number(ck_number):
         if len(l) > 1:
             print(f"\n Found more than 1 ck_image with number: {ck_number}")
             ask_to_continue()
-        found = True if l else False
-        img = l[0]
-        img.show_ck_img()
+        if l:
+            found = True
+            img = l[0]
+            img.show_ck_img()
+            payee_txt_hugginface = img.payee_txt_hugginface
+            payee_txt_textract = img.payee_txt_textract
+        else:
+            found = False
+            payee_txt_hugginface = ""
+            payee_txt_textract = ""
+        session.close() # maybe not needed
         return (found,
-                img.payee_txt_hugginface,
-                img.payee_txt_textract,
+                payee_txt_hugginface,
+                payee_txt_textract,
         )
+
+def show_all_cks_imgs_for_period(period):
+    with get_sqlalchemy_session() as session:
+        l = session.query(CkImage).filter(
+            CkImage.period==period,
+            CkImage.client_id == client_id, 
+            ).all()
+        for img in l:
+            img.show_ck_img()
+            activate_powershell()
+            while True:
+                a = red.input(f"\n Next ? y/n : ")
+                if a == "y" or a == "Y":
+                    close_photos_windows_app()
+                    break
+                if a == "n" or a == "N":
+                    # close_photos_windows_app() # leave last opened, it will closed after choose a vendor
+                    # activate_powershell()
+                    return
+        activate_powershell()
+        return
 
 # def show_ck_image_if_ck_number(ck_number):
 #     with get_sqlalchemy_session() as session:
@@ -105,39 +163,27 @@ def save_payee_img_in_vendor_dir(dir, vendor,ck_number):
             ask_to_continue()
         if l:
             img = l[0]
-            img.save_payee_img_in_dir(dir, vendor)
+            img.save_payee_img_in_dir(dir, vendor, session) # calls session.commit()
+        session.close()
 
 
 def this_period_cks_images_done(period):
     with get_sqlalchemy_session() as session:
         q = session.query(CkImage).filter(CkImage.period==period).all()
-        return bool(q) 
-
+        done = bool(q) 
+        session.close()
+        return done
 
 def get_cks_imgs_numbers_for_period(period):
     with get_sqlalchemy_session() as session:
-        l = []
         q = session.query(CkImage).filter(CkImage.period==period)
-        return [c.ck_number for c in q]
-
+        l = [c.ck_number for c in q]
+        session.close()
+        return l
 
 def other_query_examples():
     # https://docs.sqlalchemy.org/en/14/orm/tutorial.html
     pass
-
-def print_all_cks_images():
-    images = get_all_cks_images()
-    # clients = get_all_clients_directly_from_sqlite3()
-    for i in images:
-        print()
-        print(i.ck_number)
-        # print(i.id)
-        # print(i.created_date)
-        # print(f"dir(client): {dir(i)}")
-        # print('cks_images:')
-        # print("printing vars(client)")
-        # pprint.pprint(vars(i))
-        print()
 
 
 def create_various():

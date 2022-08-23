@@ -37,8 +37,26 @@ def search_and_add_transactions_from_bank_charges( all_lines, transactions ):
             vendor_key = client_partner.find_vendor_in_line_or_ask(line, previous_line, msg_if_not_found='Did not find vendor in bank charges line')
 
             if vendor_key:
+
+                # TODO create vendor_dict somewhere & imported here & get_vendor_dict_from_ck_line & search_and_add_transactions_from_bank_charges
+                vendor_dict = {
+                    'line_has_2_debits': False,
+                    'partner_key': vendor_key,
+                    'code': vendor_key,
+                    'name': "this will not be used",
+                    'amount': "this will not be used",# amount, # this should be a string
+                    'ck_number': "this will not be used",# ck_number,
+                    'is_check': False, 
+                    'date': "this will not be used",#date,
+                    #TODO: could ask here for new memo like in get_vendor_dict_from_ck_line
+                    'memo': "",# must be "" 
+                    'account': "this will not be used",#account,
+                    'found': "this will not be used",#True,
+                    }            
+
                 # new_transactions = client_partner.get_debit_transaction_from_line( vendor_key, line, previous_line ,ignore_date=False )
-                new_transactions = client_partner.get_debit_transaction_from_bank_charge_line( vendor_key, line, previous_line ,ignore_date=False )
+                # new_transactions = client_partner.get_debit_transaction_from_bank_charge_line( vendor_key, line, previous_line ,ignore_date=False )
+                new_transactions = client_partner.get_debit_transaction_from_bank_charge_line( vendor_dict, line, previous_line ,ignore_date=False )
                 if new_transactions: # sometimes amount == 0 & the line is been ignored
                     for t in new_transactions:
                         transactions.append( t )

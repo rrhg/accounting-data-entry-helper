@@ -11,7 +11,6 @@ from rich.console import Console
 red = Console(style="red")
 yellow = Console(style="yellow")
 
-from client_partner import find_vendor_in_line_or_ask
 
 # TODO: No delete but: 
 #           Think should be named get_or_created_vendor bc maybe thas the only thing used from it
@@ -19,8 +18,12 @@ from client_partner import find_vendor_in_line_or_ask
 
 
 def get_or_create_vendor_dict_from_ck_line( 
-    ck_line, ck_number, client_have_cks_imgs
-):
+                       ck_line,
+                       ck_number,
+                       client_have_cks_imgs,
+                       found_ck_image,
+                       ask_n_show_all_cks_images,
+                        ):
     # TODO: maybe no need to get amount, date, ck number herebc is been done in get transaction from line 
     amount = client.get_amount_str_from_ck_line( ck_line )
     """ in case the pdf was read incorrectly & the amount includes unrecognized characters, ask to fix it here, instead of getting an error later """
@@ -37,11 +40,20 @@ def get_or_create_vendor_dict_from_ck_line(
     #    1- search for a vendor w strings that match infered payee
     #    2- if not ask to :choose(prompt) vendor, ignore, etc
     infered_payee = get_infered_payee_from_ck_image(ck_number)
-    if infered_payee == "":
-        infered_payee = "could not infer payee from check"
     previous_line = ""
-    vendor_key = client_partner.find_vendor_in_line_or_ask(
-        ck_line, previous_line, infered_payee_in_ck_image=infered_payee )
+
+    def get_vendor_key(): # TODO circular dependency
+        from client_partner.find_in_line_or_ask import find_vendor_in_line_or_ask
+        vendor_key = find_vendor_in_line_or_ask(
+            ck_line,
+            previous_line,
+            is_check=True, 
+            infered_payee_in_ck_image=infered_payee
+        )
+        return vendor_key
+
+    vendor_key = get_vendor_key()
+
 
     # not anymore. now done in previous function
     # if vendor_key == 'create new vendor':
@@ -56,6 +68,9 @@ def get_or_create_vendor_dict_from_ck_line(
     account = vendors_dict[vendor_key]['account']
     memo = vendors_dict[vendor_key]['description']
 
+    print(f"\n vendor found for ck#{ck_number} is:")
+    print(f"{vendor_name} \n")
+
     red.print("\nEnter memo: (Leave Blank to use vendor description) :")
     new_memo = input(" : ")
     if new_memo != "": # If user enters something, then use it as memo
@@ -64,7 +79,7 @@ def get_or_create_vendor_dict_from_ck_line(
     # TODO should import vendor_dict or partner dict from client_partner
     vendor_dict = {
         'line_has_2_debits': False,
-        'vendor_key': vendor_key,
+        'partner_key': vendor_key,
         'code': vendor_key,
         'name': vendor_name,
         'amount': amount, # this should be a string

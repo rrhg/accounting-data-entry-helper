@@ -17,22 +17,34 @@ from client_partner.get_partner_info_from_user import get_partner_info_from_user
 
 
 
-def get_credit_transaction_from_line( partner_key, line, previous_line, ignore_date=False ):
-    return get_transaction_from_line( partner_key, line, previous_line, ptype=customer, ignore_date=ignore_date )
+def get_credit_transaction_from_line( partner_dict, line, previous_line, ignore_date=False ):
+    return get_transaction_from_line( partner_dict, line, previous_line, ptype=customer, ignore_date=ignore_date )
 
-def get_debit_transaction_from_line( partner_key, line, previous_line, ignore_date=False ):
-    return get_transaction_from_line( partner_key, line, previous_line, ttype=ttype.other, ptype=vendor, ignore_date=ignore_date )
+def get_debit_transaction_from_line( partner_dict, line, previous_line, ignore_date=False ):
+    return get_transaction_from_line( partner_dict, line, previous_line, ttype=ttype.other, ptype=vendor, ignore_date=ignore_date )
 
-def get_debit_transaction_from_check_line( partner_key, line, previous_line, ignore_date=False ):
-    return get_transaction_from_line( partner_key, line, previous_line, ttype=ttype.check, ptype=vendor, ignore_date=ignore_date, is_check = True )
+def get_debit_transaction_from_check_line( partner_dict, line, previous_line, ignore_date=False ):
+    return get_transaction_from_line( partner_dict, line, previous_line, ttype=ttype.check, ptype=vendor, ignore_date=ignore_date, is_check = True )
 
-def get_debit_transaction_from_bank_charge_line( partner_key, line, previous_line, ignore_date=False ):
-    return get_transaction_from_line( partner_key, line, previous_line, ttype=ttype.bank_charge, ptype=vendor, ignore_date=ignore_date, is_check = True )
+def get_debit_transaction_from_bank_charge_line( partner_dict, line, previous_line, ignore_date=False ):
+    return get_transaction_from_line( partner_dict, line, previous_line, ttype=ttype.bank_charge, ptype=vendor, ignore_date=ignore_date, is_check = True )
 
 
-def get_transaction_from_line( partner_key, line, previous_line, ttype='' ,ptype=vendor, ignore_date=False, is_check = False ):
+def get_transaction_from_line( old_partner_dict,
+                               line,
+                               previous_line,
+                               ttype='' ,
+                               ptype=vendor,
+                               ignore_date=False,
+                               is_check = False,
+                               ):
 
-    # print(f"\n line received in get_transaction_from_line(): {line}")
+    try:
+        partner_key = old_partner_dict["partner_key"]
+        # print(f"\n line received in get_transaction_from_line(): {line}")
+    except Exception as e:
+        partner_key = old_partner_dict["vendor_key"]
+
 
     def main():
         if split_amount_in_half:
@@ -63,12 +75,16 @@ def get_transaction_from_line( partner_key, line, previous_line, ttype='' ,ptype
 
     partner_code =        partner_dict['code']
     partner_name =        partner_dict['name']
-    memo =                partner_dict['description']
     account =             partner_dict['account']
     account_can_change=   partner_dict.get('account_can_change', False)
     affects_more_than_1_account = partner_dict.get('affects_more_than_1_account', False)
     accounts =            partner_dict.get('accounts', False)
     split_amount_in_half= partner_dict.get('split_amount_in_half', False)
+
+    if old_partner_dict["memo"]:
+        memo = old_partner_dict["memo"]
+    else:
+        memo = partner_dict['description']
 
     bank_account = client.get_bank_account()
 

@@ -100,18 +100,20 @@ class CkImage(Base):
 
     def save_to_db(self, client_name):
         self.client_name = client_name
-        with get_sqlalchemy_session() as session:
+        with get_sqlalchemy_session() as session: # TODO: should this be done in db.cks_images ?
             client = session.query(Client).filter_by(name=client_name).one()
             client.cks_images.append(self)
             session.commit()
             session.close() # maybe not needed?
 
 
-    def save_payee_img_in_dir(self, payees_imgs_dir, vendor):
+    def save_payee_img_in_dir(self, payees_imgs_dir, vendor, session):
         """saving under vendor for future model training"""
+        vendor = vendor.strip() # if trailing "" then os will remove it & get file does not exist when saving file
         vendor_payee_imgs_dir = Path(payees_imgs_dir)
         vendor_payee_imgs_dir = payees_imgs_dir / vendor
         vendor_payee_imgs_dir.mkdir(parents=True, exist_ok=True)
+        
         name = ( f"{self.period}_"
                  f"{vendor}_"
                  f"{self.alt_number}_"
@@ -122,10 +124,11 @@ class CkImage(Base):
                                     (self.payee_img_width,
                                     self.payee_img_height), # needs a tuple of int
                                     self.payee_img_as_bytes)
-        payee_img.save(str(path))
+        payee_img.save(path)
+        # payee_img.save(str(path))
         self.payee_img_path = str(path)
-        self.save_to_db(self.client_name)
-
+        # self.save_to_db(self.client_name) # error CkImage already attached to session. & is unnnecesary. 
+        session.commit() # update in db
 
     def show_payee_img(self):
         payee_img = Image.frombytes(self.payee_img_mode,
